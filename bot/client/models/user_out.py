@@ -8,65 +8,79 @@ from dateutil.parser import isoparse
 from ..models.user_priority import UserPriority
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="CreateUserIn")
+T = TypeVar("T", bound="UserOut")
 
 
 @_attrs_define
-class CreateUserIn:
+class UserOut:
     """Промежуточная модель pydantic'а для унифицирования конфигов и удобного администрирования
 
     Attributes:
+        id (int):
         login (str):
-        password (str):
-        email (str):
         last_name (str):
         first_name (str):
-        role_ids (List[int]):  Example: [5].
-        priority (UserPriority): Приоритет пользователей при резервировании ВКС.
+        email (str):
+        role_ids (List[int]):
+        is_active (bool):
+        created_at (datetime.datetime):
+        middle_name (Union[Unset, str]):
+        department_id (Union[Unset, int]):
+        post (Union[Unset, str]):
+        priority (Union[Unset, UserPriority]): Приоритет пользователей при резервировании ВКС.
 
             Больший приоритет обеспечивает большие возможности по резервированию.
 
             Приоритеты делятся по уровням, самый большой приоритет обеспечивает 100% возможность резервирования комнаты
             (при недостаче ВКС или при назначении ВКС на занятое в текущее время положение, имеющийся сеанс будет отменён)
-        department_id (int):  Example: 1.
-        middle_name (Union[Unset, str]):
         phone (Union[Unset, str]):
         birthday (Union[Unset, datetime.date]):
-        is_send_email (Union[Unset, bool]): Отправлять на почту данны для входа в учётную запись Default: True.
+        deleted_at (Union[Unset, datetime.datetime]):
     """
 
+    id: int
     login: str
-    password: str
-    email: str
     last_name: str
     first_name: str
+    email: str
     role_ids: List[int]
-    priority: UserPriority
-    department_id: int
+    is_active: bool
+    created_at: datetime.datetime
     middle_name: Union[Unset, str] = UNSET
+    department_id: Union[Unset, int] = UNSET
+    post: Union[Unset, str] = UNSET
+    priority: Union[Unset, UserPriority] = UNSET
     phone: Union[Unset, str] = UNSET
     birthday: Union[Unset, datetime.date] = UNSET
-    is_send_email: Union[Unset, bool] = True
+    deleted_at: Union[Unset, datetime.datetime] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        id = self.id
+
         login = self.login
-
-        password = self.password
-
-        email = self.email
 
         last_name = self.last_name
 
         first_name = self.first_name
 
+        email = self.email
+
         role_ids = self.role_ids
 
-        priority = self.priority.value
+        is_active = self.is_active
+
+        created_at = self.created_at.isoformat()
+
+        middle_name = self.middle_name
 
         department_id = self.department_id
 
-        middle_name = self.middle_name
+        post = self.post
+
+        priority: Union[Unset, int] = UNSET
+        if not isinstance(self.priority, Unset):
+            priority = self.priority.value
 
         phone = self.phone
 
@@ -74,82 +88,109 @@ class CreateUserIn:
         if not isinstance(self.birthday, Unset):
             birthday = self.birthday.isoformat()
 
-        is_send_email = self.is_send_email
+        deleted_at: Union[Unset, str] = UNSET
+        if not isinstance(self.deleted_at, Unset):
+            deleted_at = self.deleted_at.isoformat()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
                 "login": login,
-                "password": password,
-                "email": email,
                 "lastName": last_name,
                 "firstName": first_name,
+                "email": email,
                 "roleIds": role_ids,
-                "priority": priority,
-                "departmentId": department_id,
+                "isActive": is_active,
+                "createdAt": created_at,
             }
         )
         if middle_name is not UNSET:
             field_dict["middleName"] = middle_name
+        if department_id is not UNSET:
+            field_dict["departmentId"] = department_id
+        if post is not UNSET:
+            field_dict["post"] = post
+        if priority is not UNSET:
+            field_dict["priority"] = priority
         if phone is not UNSET:
             field_dict["phone"] = phone
         if birthday is not UNSET:
             field_dict["birthday"] = birthday
-        if is_send_email is not UNSET:
-            field_dict["isSendEmail"] = is_send_email
+        if deleted_at is not UNSET:
+            field_dict["deletedAt"] = deleted_at
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        id = d.pop("id")
+
         login = d.pop("login")
-
-        password = d.pop("password")
-
-        email = d.pop("email")
 
         last_name = d.pop("lastName")
 
         first_name = d.pop("firstName")
 
+        email = d.pop("email")
+
         role_ids = cast(List[int], d.pop("roleIds"))
 
-        priority = UserPriority(d.pop("priority"))
+        is_active = d.pop("isActive")
 
-        department_id = d.pop("departmentId")
+        created_at = isoparse(d.pop("createdAt"))
 
         middle_name = d.pop("middleName", UNSET)
+
+        department_id = d.pop("departmentId", UNSET)
+
+        post = d.pop("post", UNSET)
+
+        _priority = d.pop("priority", UNSET)
+        priority: Union[Unset, UserPriority]
+        if isinstance(_priority, Unset):
+            priority = UNSET
+        else:
+            priority = UserPriority(_priority)
 
         phone = d.pop("phone", UNSET)
 
         _birthday = d.pop("birthday", UNSET)
         birthday: Union[Unset, datetime.date]
-        if isinstance(_birthday, Unset):
+        if isinstance(_birthday, Unset) or _birthday is None:
             birthday = UNSET
         else:
             birthday = isoparse(_birthday).date()
 
-        is_send_email = d.pop("isSendEmail", UNSET)
+        _deleted_at = d.pop("deletedAt", UNSET)
+        deleted_at: Union[Unset, datetime.datetime]
+        if isinstance(_deleted_at, Unset):
+            deleted_at = UNSET
+        else:
+            deleted_at = isoparse(_deleted_at)
 
-        create_user_in = cls(
+        user_out = cls(
+            id=id,
             login=login,
-            password=password,
-            email=email,
             last_name=last_name,
             first_name=first_name,
+            email=email,
             role_ids=role_ids,
-            priority=priority,
-            department_id=department_id,
+            is_active=is_active,
+            created_at=created_at,
             middle_name=middle_name,
+            department_id=department_id,
+            post=post,
+            priority=priority,
             phone=phone,
             birthday=birthday,
-            is_send_email=is_send_email,
+            deleted_at=deleted_at,
         )
 
-        create_user_in.additional_properties = d
-        return create_user_in
+        user_out.additional_properties = d
+        return user_out
 
     @property
     def additional_keys(self) -> List[str]:

@@ -7,7 +7,6 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.setting_update import SettingUpdate
-from ...models.vinteo_global_setting_update import VinteoGlobalSettingUpdate
 from ...types import Response
 
 

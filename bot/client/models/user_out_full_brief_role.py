@@ -180,7 +180,7 @@ class UserOutFullBriefRole:
 
         _birthday = d.pop("birthday", UNSET)
         birthday: Union[Unset, datetime.date]
-        if isinstance(_birthday, Unset):
+        if isinstance(_birthday, Unset) or _birthday is None:
             birthday = UNSET
         else:
             birthday = isoparse(_birthday).date()
