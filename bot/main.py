@@ -1,29 +1,43 @@
-import asyncio
+import logging
+from aiogram.types import Update
+from fastapi import FastAPI, APIRouter
+from fastapi.requests import Request
+import uvicorn
+from contextlib import asynccontextmanager
 
-import redis.asyncio as redis
-from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.redis import RedisStorage
-
-from handlers import register_all_handlers
-from config import TELEGRAM_API_TOKEN, REDIS_URL
+from bot import bot, dp
+from api.vcc_list import router as vcc_list_router
+from config import WEB_BASE_URL, API_PORT
 
 
-async def main():
-    bot = Bot(token=TELEGRAM_API_TOKEN)
-    dp = Dispatcher(
-        storage=RedisStorage(redis.from_url(
-            REDIS_URL,
-            encoding="utf-8",
-            decode_responses=True,
-        )),
-    )
-
-    register_all_handlers(dp)
-
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     try:
-        await dp.start_polling(bot)
+        await bot.set_webhook(
+            url=f"{WEB_BASE_URL}/webhook",
+            allowed_updates=dp.resolve_used_update_types(),
+            drop_pending_updates=True,
+        )
+        logging.info(f"Webhook set at {WEB_BASE_URL}/webhook")
+        yield
     finally:
-        await bot.session.close()
+        await bot.delete_webhook()
+
+
+app = FastAPI(lifespan=lifespan)
+
+
+@app.post("/webhook")
+async def webhook(request: Request) -> None:
+    data = await request.json()
+    update = Update.model_validate(data, context={"bot": bot})
+    await dp.feed_update(bot, update)
+
+
+base_router = APIRouter(prefix="/api")
+app.include_router(vcc_list_router)
+
+app.include_router(base_router)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    uvicorn.run(app, host="0.0.0.0", port=API_PORT)

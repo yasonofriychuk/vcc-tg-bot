@@ -9,6 +9,7 @@ from client.models.body_login_auth_login_post import BodyLoginAuthLoginPost
 from client.models.login_out import LoginOut
 from client.types import Response
 from config import API_BASE_URL
+from keyboards.reply_menu import reply_menu
 from services.auth import Auth
 
 auth_redis = Auth()
@@ -46,7 +47,7 @@ async def process_password(message: Message, state: FSMContext):
         await message.answer("Что-то пошло не так, попробуйте позже")
     elif response.status_code == 200:
         if await auth_redis.set_token(str(message.chat.id), response.parsed.token):
-            await message.answer("Авторизация прошла успешно!")
+            await message.answer("Авторизация прошла успешно!", reply_markup=reply_menu())
         else:
             await message.answer("Что-то пошло не так, попробуйте позже")
     else:

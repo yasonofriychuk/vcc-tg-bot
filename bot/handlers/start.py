@@ -14,10 +14,5 @@ async def start_command(message: Message):
     await message.answer("Привет! Нажми 'Авторизация', чтобы войти", reply_markup=keyboard)
 
 
-async def check_command(message: Message):
-    await message.answer(f"{await auth_redis.get_token(str(message.chat.id))}")
-
-
 def register_start_handlers(dp: Dispatcher):
     dp.message.register(start_command, Command("start"))
-    dp.message.register(check_command, Command("check"))
