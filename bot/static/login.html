@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+
+    <link href="/static/style.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.4.6/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.4.6/dist/flowbite.min.js"></script>
+    <script src="/static/script.js"></script>
+</head>
+
+<body class="h-screen bg-gray-100 flex items-center justify-center">
+
+    <!-- Форма авторизации -->
+    <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
+        <h2 class="text-2xl font-semibold text-center mb-6">Вход в систему</h2>
+        <form id="login-form" action="#" method="POST">
+            <div class="mb-4">
+                <label for="login" class="block text-sm font-medium text-gray-700">Логин</label>
+                <input type="text" id="login" name="login" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
+
+            <div class="mb-6">
+                <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+                <input type="password" id="password" name="password" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
+
+            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Войти</button>
+        </form>
+    </div>
+
+    <!-- Toast уведомление (всплывающее сообщение) -->
+    <div id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 hidden absolute top-1/4 left-1/2 transform -translate-x-1/2 z-50 opacity-0 transition-opacity duration-500" role="alert">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+            </svg>
+            <span class="sr-only">Error icon</span>
+        </div>
+        <div class="ms-3 text-sm font-normal" id="toast-message">Произошла ошибка!</div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/auth/login/', {
+                    method: 'POST',
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'init-data': window.Telegram.WebApp.initData
+                    },
+                    body: JSON.stringify({
+                        login: login,
+                        password: password,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    if (result.status === true) {
+                        Telegram.WebApp.close();
+                    } else if (result.status === false) {
+                        showToast('Неверный пароль');
+                    }
+                } else {
+                    showToast('Произошла ошибка, попробуйте позже.');
+                }
+            } catch (error) {
+                showToast('Произошла ошибка, попробуйте позже.');
+            }
+        });
+    </script>
+</body>
+</html>

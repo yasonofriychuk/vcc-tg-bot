@@ -1,46 +1,88 @@
+import json
 from datetime import datetime
 
-from aiogram import types, Dispatcher
-from aiogram.filters import Command
+from aiogram import Dispatcher
+from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 from client import AuthenticatedClient
+from client.models import MeetingSortingFields
 from client.types import Response
 from config import API_BASE_URL
 from services.auth import Auth
 from client.api.meetings import get_meetings_meetings_get
 from client.models.meeting_list import MeetingList
-from client.models.user_priority import UserPriority
+from services.data_saver import ContextSaver
 
 auth = Auth()
+saver = ContextSaver()
 
 
-async def vcc_list(message: types.Message):
-    token = await auth.get_token(message.chat.id)
-    if token is None:
-        await message.answer(text="Нужно авторизоваться")
+async def show_meetings(callback: CallbackQuery):
+    page, key = callback.data.removeprefix("show_meet:").split(":", 1)
+
+    user_id = callback.message.chat.id
+    page = int(page)
+
+    token = await auth.get_token(user_id)
+    data = await saver.get_data(user_id, key)
+    if not data or not token:
+        await callback.message.edit_text(text=f"Данные устарели {key}, {page}, {callback.data}")
+        await callback.answer()
         return
 
-    msg_part = message.text.split()
-    if len(msg_part) != 3:
-        await message.answer(text="Неверный формат команды")
-        return
+    data_json = dict(json.loads(data))
+
+    from_datetime = datetime.fromisoformat(data_json.get("date_from"))
+    to_datetime = datetime.fromisoformat(data_json.get("date_to"))
+
+    client = AuthenticatedClient(base_url=API_BASE_URL, verify_ssl=False, token=token.original_token)
 
     try:
-        date_from, date_to = datetime.strptime(msg_part[1], "%d-%m-%Y"), datetime.strptime(msg_part[2], "%d-%m-%Y")
-    except:
-        await message.answer(text="Нверный формат даты")
+        async with client as client:
+            response_meetings: Response[MeetingList] = await get_meetings_meetings_get.asyncio_detailed(
+                client=client,
+                from_datetime=from_datetime,
+                to_datetime=to_datetime,
+                sort_by=MeetingSortingFields.STARTEDAT,
+                rows_per_page=1,
+                page=page
+            )
+    except Exception as e:
+        await callback.answer("Что-то пошло не так, повторите попытку позже")
         return
 
-    async with AuthenticatedClient(base_url=API_BASE_URL, verify_ssl=False, token=token.original_token) as client:
-        response: Response[MeetingList] = await get_meetings_meetings_get.asyncio_detailed(
-            client=client,
-            from_datetime=date_from,
-            to_datetime=date_to,
-            priority=UserPriority.VALUE_1
-        )
+    if not response_meetings or response_meetings.status_code != 200:
+        await callback.answer("Что-то пошло не так, повторите попытку позже")
+        return
 
-    await message.answer(text=response.content.decode('utf-8')[:100])
+    if not response_meetings.parsed.data:
+        await callback.message.edit_text(
+            "Вы достигли конца списка",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="Назад", callback_data=f"show_meet:{max(page-1, 1)}:{key}")],
+            ])
+        )
+        return
+
+    meeting = response_meetings.parsed.data[0]
+    total = response_meetings.parsed.rows_number
+
+    msg_parts = [
+        f"Встреча {page} из {total}.",
+        "",
+        f"Название: {meeting.name}",
+        f"Дата начала: {meeting.started_at.strftime('%H:%M %d.%m.%Y')}",
+    ]
+
+    buttons = []
+    if page > 1:
+        buttons.append(InlineKeyboardButton(text="<-", callback_data=f"show_meet:{page-1}:{key}"))
+
+    if page < total:
+        buttons.append(InlineKeyboardButton(text="->", callback_data=f"show_meet:{page+1}:{key}"))
+
+    await callback.message.edit_text("\n".join(msg_parts), reply_markup=InlineKeyboardMarkup(inline_keyboard=[buttons]))
 
 
 def register_vcc_list_handlers(dp: Dispatcher):
-    dp.message.register(vcc_list, Command("list"))
+    dp.callback_query.register(show_meetings, lambda c: str(c.data).startswith("show_meet:"))

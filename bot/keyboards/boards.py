@@ -12,5 +12,5 @@ def reply_menu():
 
 def auth_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Авторизоваться", callback_data="auth_start")]
+        [InlineKeyboardButton(text="Войти в ВКС", web_app=WebAppInfo(url=f"{WEB_BASE_URL}/static/login.html"))]
     ])

@@ -11,6 +11,7 @@ from config import WEB_BASE_URL, API_PORT
 from bot import bot, dp
 from api.vcc_list import router as vcc_list_router
 from api.vcc_create import router as vcc_create_router
+from api.auth import router as auth_router
 
 
 @asynccontextmanager
@@ -41,6 +42,7 @@ base_router = APIRouter(prefix="/api")
 
 base_router.include_router(vcc_list_router)
 base_router.include_router(vcc_create_router)
+base_router.include_router(auth_router)
 
 app.include_router(base_router)
 app.mount("/static", StaticFiles(directory="static"), name="static")

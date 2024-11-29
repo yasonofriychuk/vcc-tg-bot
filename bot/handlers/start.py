@@ -20,7 +20,7 @@ async def start_command(message: Message):
         return
 
     await message.answer(
-        f"""Привет, {token.user.login if token.user else 'пользователь'}! Ты авторизован, поэтому держи меню""",
+        f"""Привет, {token.user.login if token.user else 'пользователь'}! Я ВКС-бот. Чем могу помочь?""",
         reply_markup=reply_menu()
     )
 
