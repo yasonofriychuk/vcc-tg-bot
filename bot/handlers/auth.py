@@ -9,10 +9,10 @@ from client.models.body_login_auth_login_post import BodyLoginAuthLoginPost
 from client.models.login_out import LoginOut
 from client.types import Response
 from config import API_BASE_URL
-from keyboards.reply_menu import reply_menu
+from keyboards.boards import reply_menu
 from services.auth import Auth
 
-auth_redis = Auth()
+auth = Auth()
 
 
 class AuthForm(StatesGroup):
@@ -21,7 +21,7 @@ class AuthForm(StatesGroup):
 
 
 async def auth_start(callback: CallbackQuery, state: FSMContext):
-    await callback.message.edit_text("Введите ваш логин")
+    await callback.message.answer("Приступим, введите ваш логин")
     await state.set_state(AuthForm.login)
 
 
@@ -37,16 +37,20 @@ async def process_password(message: Message, state: FSMContext):
     login = user_data.get("login")
     password = message.text
 
-    async with Client(base_url=API_BASE_URL, verify_ssl=False) as client:
-        response: Response[LoginOut] = await login_auth_login_post.asyncio_detailed(
-            client=client,
-            body=BodyLoginAuthLoginPost(login=login, password=password),
-        )
+    try:
+        async with Client(base_url=API_BASE_URL, verify_ssl=False) as client:
+            response: Response[LoginOut] = await login_auth_login_post.asyncio_detailed(
+                client=client,
+                body=BodyLoginAuthLoginPost(login=login, password=password),
+            )
+    except:
+        await message.answer("Что-то пошло не так, попробуйте позже")
+        return
 
     if response.status_code == 500:
         await message.answer("Что-то пошло не так, попробуйте позже")
     elif response.status_code == 200:
-        if await auth_redis.set_token(str(message.chat.id), response.parsed.token):
+        if await auth.set_token(message.chat.id, response.parsed.token):
             await message.answer("Авторизация прошла успешно!", reply_markup=reply_menu())
         else:
             await message.answer("Что-то пошло не так, попробуйте позже")

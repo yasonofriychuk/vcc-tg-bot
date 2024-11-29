@@ -39,8 +39,8 @@ async def webhook(request: Request) -> None:
 
 base_router = APIRouter(prefix="/api")
 
-app.include_router(vcc_list_router)
-app.include_router(vcc_create_router)
+base_router.include_router(vcc_list_router)
+base_router.include_router(vcc_create_router)
 
 app.include_router(base_router)
 app.mount("/static", StaticFiles(directory="static"), name="static")

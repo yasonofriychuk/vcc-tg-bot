@@ -8,3 +8,9 @@ def reply_menu():
         [InlineKeyboardButton(text="Поиск", web_app=WebAppInfo(url=f"{WEB_BASE_URL}/static/vcc-list.html"))],
         [InlineKeyboardButton(text="Создание", web_app=WebAppInfo(url=f"{WEB_BASE_URL}/static/vcc-create.html"))],
     ])
+
+
+def auth_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Авторизоваться", callback_data="auth_start")]
+    ])

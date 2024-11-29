@@ -398,7 +398,7 @@ class MeetingFull:
 
         _closed_at = d.pop("closedAt", UNSET)
         closed_at: Union[Unset, datetime.datetime]
-        if isinstance(_closed_at, Unset):
+        if isinstance(_closed_at, Unset) or _closed_at is None:
             closed_at = UNSET
         else:
             closed_at = isoparse(_closed_at)
