@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание видеоконференции</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
- <h1>VCC CREATE</h1>
+
+<body class="bg-gray-100 flex flex-col justify-center items-center min-h-screen">
+    <div class="w-full max-w-xl p-6 bg-white rounded-lg shadow-lg my-10">
+        <h2 class="text-2xl font-semibold text-center mb-6">Создание видеоконференции</h2>
+
+        <form action="#" method="POST">
+            <!-- Название ВКС -->
+            <div class="mb-4">
+                <label for="conference-name" class="block text-sm font-medium text-gray-700">Название ВКС</label>
+                <input type="text" id="conference-name" name="conference-name" required
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Место проведения -->
+            <div class="mb-4">
+                <label for="location" class="block text-sm font-medium text-gray-700">Место проведения</label>
+                <select id="location" name="location"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Выберите место</option>
+                    <option value="online">Онлайн</option>
+                    <option value="office">В офисе</option>
+                </select>
+            </div>
+
+            <!-- Помещение -->
+            <div class="mb-4">
+                <label for="room" class="block text-sm font-medium text-gray-700">Помещение</label>
+                <select id="room" name="room" required
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Выберите помещение</option>
+                    <option value="room1">Комната 1</option>
+                    <option value="room2">Комната 2</option>
+                    <option value="room3">Комната 3</option>
+                </select>
+            </div>
+
+            <!-- Дата и время начала -->
+            <div class="mb-4">
+                <label for="start-time" class="block text-sm font-medium text-gray-700">Дата и время начала</label>
+                <input type="datetime-local" id="start-time" name="start-time" required
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Продолжительность -->
+            <div class="mb-4">
+                <label for="duration" class="block text-sm font-medium text-gray-700">Продолжительность (в минутах)</label>
+                <input type="number" id="duration" name="duration" required min="1"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Организатор (автоматически заполняется) -->
+            <div class="mb-4">
+                <label for="organizer" class="block text-sm font-medium text-gray-700">Организатор</label>
+                <input type="text" id="organizer" name="organizer" value="Иван Иванов" readonly
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed">
+            </div>
+
+            <!-- Участники -->
+            <div class="mb-4">
+                <label for="participants" class="block text-sm font-medium text-gray-700">Участники</label>
+                <input type="email" id="participants" name="participants" placeholder="Введите email участников"
+                    required class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Максимальное количество участников -->
+            <div class="mb-4">
+                <label for="max-participants" class="block text-sm font-medium text-gray-700">Максимальное количество
+                    участников</label>
+                <input type="number" id="max-participants" name="max-participants" required min="1"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Средство проведения -->
+            <div class="mb-4">
+                <label for="platform" class="block text-sm font-medium text-gray-700">Средство проведения</label>
+                <select id="platform" name="platform" required
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Выберите платформу</option>
+                    <option value="zoom">Zoom</option>
+                    <option value="skype">Skype</option>
+                    <option value="teams">Teams</option>
+                </select>
+            </div>
+
+            <!-- Кнопка создания -->
+            <div class="mt-6 text-center">
+                <button type="submit"
+                    class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                    Создать ВКС
+                </button>
+            </div>
+        </form>
+    </div>
+
 </body>
+
 </html>

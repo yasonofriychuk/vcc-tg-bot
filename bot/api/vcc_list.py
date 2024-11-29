@@ -2,13 +2,13 @@ import json
 from datetime import datetime, timedelta
 from typing import Optional
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from api.deps.security import HeaderInitParams
 from client import AuthenticatedClient
 from client.api.meetings import get_meetings_meetings_get
-from client.models import MeetingList
+from client.models import MeetingList, UserPriority
 from client.types import Response
 from config import API_BASE_URL
 from keyboards.boards import auth_keyboard
@@ -65,11 +65,10 @@ async def vcc_list(
                 from_datetime=params.date_from,
                 to_datetime=params.date_to,
                 rows_per_page=1,
-                page=1
+                page=1,
             )
     except Exception as e:
-        await bot.send_message(init_data.user_id, "Что-то пошло не так, повторите попытку позже")
-        return
+        raise HTTPException(500, "Internal Server Error")
 
     if not response or response.status_code != 200 or not response.parsed.rows_number:
         await bot.send_message(init_data.user_id, "Нет подходящих встреч")
@@ -77,8 +76,7 @@ async def vcc_list(
 
     key = await saver.save_data(init_data.user_id, get_callback_data(params, page=1))
     if not key:
-        await bot.send_message(init_data.user_id, "Что-то пошло не так, повторите попытку позже")
-        return
+        raise HTTPException(500, "Internal Server Error")
 
     await bot.send_message(
         init_data.user_id,
