@@ -8,8 +8,7 @@ from pydantic import BaseModel
 
 from client import AuthenticatedClient
 from client.api.meetings import get_meetings_meetings_get, get_meeting_meetings_meeting_id_get
-from client.models import MeetingList, UserPriority, MeetingBackend, MeetingSortingFields, HTTPValidationError, \
-    MeetingFull, MeetingShortExtended, MeetingBare
+from client.models import MeetingList, UserPriority, MeetingBackend, MeetingSortingFields, MeetingFull, MeetingShortExtended
 from client.types import Response, UNSET
 from config import API_BASE_URL, REDIS_URL
 from services.auth import TokenData
@@ -35,7 +34,7 @@ class MeetingsClient:
             self,
             token: TokenData,
             params: GetMeetingIn,
-    ) -> tuple[MeetingList, Optional[MeetingFull]]:
+    ) -> tuple[MeetingList, Optional[MeetingShortExtended | MeetingFull]]:
         meetings_resp = await self.__get_meetings(token, params)
         if not meetings_resp or meetings_resp.status_code != 200:
             raise HTTPException(500, f"Internal Server Error: GET meetings")
@@ -83,3 +82,10 @@ def get_dict(data: GetMeetingIn, **kwargs) -> str:
 
     data_dict.update(kwargs)
     return json.dumps(data_dict)
+
+
+def dict_to_model(data: dict) -> GetMeetingIn:
+    data["from_datetime"] = datetime.fromisoformat(data.get("from_datetime"))
+    data["to_datetime"] = datetime.fromisoformat(data.get("to_datetime"))
+
+    return GetMeetingIn(**data)
