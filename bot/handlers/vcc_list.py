@@ -52,7 +52,7 @@ async def show_meetings(callback: CallbackQuery):
         return
 
     if not response_meetings or response_meetings.status_code != 200:
-        await callback.answer("Что-то пошло не так, повторите попытку позже")
+        await callback.answer(f"Ой, сайт ВКС упал. Повторите попытку позже")
         return
 
     if not response_meetings.parsed.data:

@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from api.deps.security import HeaderInitParams
 from client import AuthenticatedClient
 from client.api.meetings import get_meetings_meetings_get
-from client.models import MeetingList, UserPriority
+from client.models import MeetingList
 from client.types import Response
 from config import API_BASE_URL
 from keyboards.boards import auth_keyboard
