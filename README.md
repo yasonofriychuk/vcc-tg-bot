@@ -2,7 +2,7 @@
 
 Запустить ngrok и скопировать host в .env
 ```shell
-docker run --net=host -it -e NGROK_AUTHTOKEN=token ngrok/ngrok:latest http 5001
+docker run --net=host -it -e NGROK_AUTHTOKEN=2Ga3fo0Od9DkkPQknRqmLc7jbbH_CdrfPSZJnHVViLZjT9Rc ngrok/ngrok:latest http 5001
 ```
 
 Запустить сервис
