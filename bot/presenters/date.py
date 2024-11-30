@@ -5,9 +5,10 @@ import locale
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
-def format_duration(duration: timedelta) -> str:
+def format_duration(duration: timedelta | int) -> str:
     if isinstance(duration, int):
         duration = timedelta(seconds=duration)
+
     days = duration.days
     hours = duration.seconds // 3600
     minutes = (duration.seconds % 3600) // 60
@@ -26,8 +27,9 @@ def format_duration(duration: timedelta) -> str:
 def present_date(start: datetime, end: datetime) -> str:
     if start.date() == end.date():
         return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.hour}:{end.minute:02d}"
-    else:
-        return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.day} {end.strftime('%B')} {end.year} {end.hour}:{end.minute:02d}"
+
+    return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.day} {end.strftime('%B')} {end.year} {end.hour}:{end.minute:02d}"
+
 
 def plural(number: int, forms: set[str, str, str]) -> str:
     singular, few, many = forms
