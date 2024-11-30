@@ -27,7 +27,7 @@ async def show_meetings(callback: CallbackQuery):
     token = await auth.get_token(user_id)
     data = await saver.get_data(user_id, key)
     if not data or not token:
-        await callback.message.edit_text(text=f"Данные устарели {key}, {page}, {callback.data}")
+        await callback.message.edit_text(text=f"Данные устарели")
         await callback.answer()
         return
 
@@ -71,10 +71,10 @@ async def show_meetings(callback: CallbackQuery):
     msg_parts = [
         f"Встреча <i>{page}</i> из {total}.",
         "",
-        f"<b>Название:</b> {meeting.name}",
-        f"<b>Дата и время проведения:</b> {present_date(meeting.started_at, meeting.ended_at)}",
-        f"<b>Продолжительность:</b> {format_duration(meeting.duration)}",
-        f"<b>Участников:</b> {meeting.participants_count}",
+        f"<u>Название:</u> {meeting.name}",
+        f"<u>Дата и время:</u> {present_date(meeting.started_at, meeting.ended_at)}",
+        f"<u>Продолжительность:</u> {format_duration(meeting.duration)}",
+        f"<u>Участников:</u> {meeting.participants_count}",
     ]
 
     buttons = []

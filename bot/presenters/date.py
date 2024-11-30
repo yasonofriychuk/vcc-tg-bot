@@ -17,6 +17,7 @@ months = {
     12: 'Декабрь'
 }
 
+
 def format_duration(duration: timedelta | int) -> str:
     if isinstance(duration, int):
         duration = timedelta(seconds=duration)
@@ -31,10 +32,10 @@ def format_duration(duration: timedelta | int) -> str:
     if hours > 0:
         result.append(f"{hours} ч{'ас' if hours == 1 else 'аса'}")
     if minutes > 0:
-        result.append(f"{minutes} мин")
+        result.append(f"{minutes} минут")
     if seconds > 0:
-        result.append(f"{seconds} сек")
-    return ' '.join(result) if result else "0 сек"
+        result.append(f"{seconds} секунд")
+    return ' '.join(result) if result else ""
 
 
 def present_date(start: datetime, end: datetime) -> str:
@@ -42,12 +43,13 @@ def present_date(start: datetime, end: datetime) -> str:
         return f"{start.day} {months[start.month]} {start.year} {start.hour}:{start.minute:02d} - {end.hour}:{end.minute:02d}"
     return f"{start.day} {months[start.month]} {start.year} {start.hour}:{start.minute:02d} - {end.day} {months[end.month]} {end.year} {end.hour}:{end.minute:02d}"
 
-def plural(number: int, forms: set[str, str, str]) -> str:
+
+def plural(number: int, forms: tuple[str, str, str]) -> str:
     singular, few, many = forms
 
     if number % 10 == 1 and number % 100 != 11:
-        return f"{number} {singular}"
+        return singular
     elif number % 10 in {2, 3, 4} and not (number % 100 in {12, 13, 14}):
-        return f"{number} {few}"
+        return few
     else:
-        return f"{number} {many}"
+        return many

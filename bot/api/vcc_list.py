@@ -16,11 +16,9 @@ from presenters.date import plural
 from services.auth import Auth
 from bot import bot
 from services.data_saver import ContextSaver
-from services.meetings_client import MeetingsClient
 
 auth = Auth()
 saver = ContextSaver()
-# meetings_client = MeetingsClient()
 
 router = APIRouter(tags=["list"])
 

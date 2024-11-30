@@ -70,14 +70,3 @@ def get_vks_error_message() -> str:
     ]
     
     return choice(vks_error_options)
-
-def get_outdated_data_message(key, page, callback_data) -> str:
-    outdated_data_options = [
-        f"Данные устарели: {key}, {page}, {callback_data}. Попробуйте обновить информацию.",
-        f"Информация больше не актуальна: {key}, {page}, {callback_data}. Пожалуйста, обновите данные.",
-        f"Данные для {key} на странице {page} с кодом {callback_data} устарели. Попробуйте снова позже.",
-        f"Обновление не удалось! Данные устарели: {key}, {page}, {callback_data}. Пожалуйста, повторите попытку.",
-        f"Ошибка: данные {key} на странице {page} с параметрами {callback_data} больше не актуальны."
-    ]
-    
-    return choice(outdated_data_options)
