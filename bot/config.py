@@ -11,6 +11,7 @@ if not WEB_BASE_URL:
 API_PORT = int(os.getenv("API_PORT", "5000"))
 
 API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1")
+VCC_URL = os.getenv("VCC_URL", "https://test.vcc.uriit.ru")
 
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
 REDIS_PORT = os.getenv('REDIS_PORT', '6379')

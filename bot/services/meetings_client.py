@@ -23,12 +23,19 @@ class GetMeetingIn(BaseModel):
     backend: Optional[MeetingBackend] = None
     user_participant: Optional[int] = None
     state: Optional[List[str]] = None
+    user_id: Optional[int] = None
     page: int = 1
 
 
 class MeetingsClient:
     def __init__(self, redis_url: str = REDIS_URL):
         self.redis = redis.from_url(redis_url, encoding="utf-8", decode_responses=True)
+
+    async def get_meetings(self, token: TokenData, params: GetMeetingIn) -> Response[MeetingList]:
+        meetings_resp = await self.__get_meetings(token, params)
+        if not meetings_resp or meetings_resp.status_code != 200:
+            raise HTTPException(500, f"Internal Server Error: GET meetings")
+        return meetings_resp
 
     async def get_meeting_by_filter(
             self,
@@ -58,6 +65,7 @@ class MeetingsClient:
                 department_id=params.department_id if params.department_id else UNSET,
                 backend=params.backend if params.backend else UNSET,
                 user_participant=params.user_participant if params.user_participant else UNSET,
+                user_id=params.user_id if params.user_id else UNSET,
                 rows_per_page=1,
                 page=params.page,
                 sort_by=MeetingSortingFields.STARTEDAT
