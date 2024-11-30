@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue 3 Composition API</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined|Material+Symbols+Rounded|Material+Symbols+Sharp"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@^7.0.0/css/materialdesignicons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://use.fontawesome.com/releases/v6.1.1/css/all.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/ionicons@^4.0.0/dist/css/ionicons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/eva-icons@^1.0.0/style/eva-icons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://themify.me/wp-content/themes/themify-v32/themify-icons/themify-icons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@^1.0.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/animate.css@^4.0.0/animate.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/quasar.prod.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link rel="stylesheet" href="./style.login.css" />
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <main>
+        <div class="s-modal__form s-modal--middle q-card" id="intro_form_modal">
+          <div
+            role="toolbar"
+            class="q-toolbar row no-wrap items-center s-modal__form-header"
+          >
+            <div class="text-center q-toolbar__title ellipsis">
+              <span class="s-modal__form-header-title">Новый сеанс ВКС</span
+              ><!----><!----><button
+                tabindex="0"
+                type="button"
+                class="q-btn q-btn-item non-selectable no-outline q-mr-sm s-btn--intro q-btn--flat q-btn--round text-brand q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+              >
+                <span class="q-focus-helper"></span
+                ><span class="q-btn__wrapper col row q-anchor--skip"
+                  ><span
+                    class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                    ><i
+                      aria-hidden="true"
+                      role="img"
+                      class="q-icon notranslate material-icons"
+                      >live_help</i
+                    ><!----></span
+                  ></span
+                >
+              </button>
+            </div>
+            <button
+              tabindex="0"
+              type="button"
+              class="q-btn q-btn-item non-selectable no-outline q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+            >
+              <span class="q-focus-helper"></span
+              ><span class="q-btn__wrapper col row q-anchor--skip"
+                ><span
+                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                  ><i
+                    aria-hidden="true"
+                    role="img"
+                    class="q-icon notranslate material-icons"
+                    >close</i
+                  ></span
+                ></span
+              >
+            </button>
+          </div>
+          <div class="row col-xs-12 s-stepper">
+            <div class="row col-xs-12 s-step__wrapper" id="intro_step_basic">
+              <div class="row col-xs-12 s-step cursor-pointer base-padding-all">
+                <div
+                  class="col-xs-1 row justify-center items-center s-step__circle-wrapper"
+                >
+                  <div
+                    class="s-step__circle row items-center justify-center s-step__circle--active s-step__circle--error"
+                  >
+                    <i
+                      aria-hidden="true"
+                      role="presentation"
+                      class="s-icon--medium q-icon text- notranslate material-icons"
+                      >edit</i
+                    >
+                  </div>
+                </div>
+                <div
+                  class="col-xs-11 s-step__text row items-center s-step__text--active s-step__text--error"
+                >
+                  <div class="col-xs-12 row">Основная информация</div>
+                  <div class="col-xs-12 s-step__text--caption"></div>
+                </div>
+              </div>
+              <div class="col-xs-12 s-stepper__inner">
+                <form class="q-form q-mb-xs">
+                  <div class="row base-padding-top">
+                    <div
+                      id="intro_step_basic_name"
+                      class="col-xs-12 s-form-input_wrapper"
+                    >
+                      <label
+                        for="f_b319f8b5-fb7b-427c-b9e7-3a7bc89af2ef"
+                        class="q-field q-validation-component row no-wrap items-start s-form-input required q-textarea q-textarea--autogrow q-field--outlined q-field--highlighted q-field--labeled q-field--dense q-field--error"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap text-negative"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                              
+                            >
+                              <textarea
+                                tabindex="0"
+                                rows="1"
+                                aria-label="Название"
+                                name="name"
+                                required="required"
+                                placeholder="Введите название"
+                                id="f_b319f8b5-fb7b-427c-b9e7-3a7bc89af2ef"
+                                type="text"
+                                class="q-field__native q-placeholder"
+                                style="overflow-y: hidden; height: 24px"
+                                aria-invalid="true"
+                              ></textarea>
+                              <div
+                                class="q-field__label no-pointer-events absolute ellipsis"
+                              >
+                                Название
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-icon text-negative notranslate material-icons"
+                                >error</i
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="q-field__bottom row items-start q-field__bottom--stale"
+                          >
+                            <div class="q-field__messages col">
+                              <div role="alert">Введите название сеанса</div>
+                            </div>
+                          </div>
+                        </div></label
+                      >
+                    </div>
+                    <!---->
+                    <div class="col-xs-12 s-form-input_wrapper">
+                      <label
+                        for="f_c9fb1a57-dac9-4329-8c85-bf820433be28"
+                        class="q-field q-validation-component row no-wrap items-start s-form-input q-textarea q-textarea--autogrow q-field--outlined q-field--labeled q-field--dense"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                              style=""
+                            >
+                              <textarea
+                                tabindex="0"
+                                rows="1"
+                                aria-label="Описание"
+                                name="comment"
+                                placeholder="Введите описание"
+                                id="f_c9fb1a57-dac9-4329-8c85-bf820433be28"
+                                type="text"
+                                class="q-field__native q-placeholder"
+                                style="overflow-y: hidden; height: 24px"
+                              ></textarea>
+                              <div
+                                class="q-field__label no-pointer-events absolute ellipsis"
+                              >
+                                Описание
+                              </div>
+                            </div>
+                          </div>
+                        </div></label
+                      >
+                    </div>
+                    <div class="col-xs-12 s-form-input_wrapper">
+                      <span class="s-label">Место проведения</span
+                      ><span class="s-label-unrequired">необязательно</span
+                      ><label
+                        for="f_cc3df764-352e-446b-b3ac-ff69063ca3a2"
+                        class="q-field q-validation-component row no-wrap items-start s-select q-select q-field--auto-height q-select--with-input q-select--without-chips q-select--single q-field--outlined q-field--labeled q-field--dense"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                            >
+                              <div class="q-field__native row items-center">
+                                <span></span
+                                ><input
+                                  type="search"
+                                  tabindex="0"
+                                  role="combobox"
+                                  aria-label="Здание"
+                                  aria-readonly="false"
+                                  aria-autocomplete="list"
+                                  aria-expanded="false"
+                                  aria-controls="f_cc3df764-352e-446b-b3ac-ff69063ca3a2_lb"
+                                  id="f_cc3df764-352e-446b-b3ac-ff69063ca3a2"
+                                  autocomplete="filter-building"
+                                  class="q-field__input q-placeholder col"
+                                />
+                              </div>
+                              <div
+                                class="q-field__label no-pointer-events absolute ellipsis"
+                              >
+                                Здание
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-select__dropdown-icon q-icon notranslate material-icons"
+                                >arrow_drop_down</i
+                              >
+                            </div>
+                            <!---->
+                          </div>
+                        </div></label
+                      >
+                    </div>
+                    <!---->
+                    <div
+                      id="intro_step_basic_date"
+                      class="col-xs-12 col-md-6 s-form-input_wrapper"
+                    >
+                      <span class="s-label s-label-required"
+                        >Дата и время начала</span
+                      >
+                      <div
+                        class="row justify-start full-width wrap s-datetime__wrapper"
+                      >
+                        <label
+                          for="f_1af25472-fa82-4a44-92fa-5984945b806e"
+                          class="q-field q-validation-component row no-wrap items-start s-date-input col-xs-7 q-input q-field--outlined q-field--highlighted q-field--float q-field--dense q-field--error"
+                          ><div
+                            class="q-field__inner relative-position col self-stretch"
+                          >
+                            <div
+                              tabindex="-1"
+                              class="q-field__control relative-position row no-wrap text-negative"
+                            >
+                              <div
+                                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                              >
+                                <input
+                                  tabindex="0"
+                                  placeholder="ДД.ММ.ГГГГ"
+                                  required="required"
+                                  maskdate="##.##.####"
+                                  masktime="##:##"
+                                  daterules='e=>!!e||"Необходимо указать дату!",e=>e.length===s.length||"Необходимо указать корректную дату",e=>t.rulesDateTime()||"Нельзя указывать прошедшее время!"'
+                                  timerules='e=>!!e||"Необходимо указать время!",e=>e.length===a.length||"Необходимо указать корректное время",e=>t.rulesDateTime()||"Нельзя указывать прошедшее время!"'
+                                  id="f_1af25472-fa82-4a44-92fa-5984945b806e"
+                                  type="text"
+                                  class="q-field__native q-placeholder"
+                                  aria-invalid="true"
+                                />
+                              </div>
+                              <div
+                                class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                              >
+                                <i
+                                  aria-hidden="true"
+                                  role="presentation"
+                                  class="q-icon text-negative notranslate material-icons"
+                                  >error</i
+                                >
+                              </div>
+                              <div
+                                class="q-field__append q-field__marginal row no-wrap items-center"
+                              >
+                                <i
+                                  aria-hidden="true"
+                                  role="presentation"
+                                  class="cursor-pointer q-icon notranslate material-icons"
+                                  >event<!----></i
+                                >
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__bottom row items-start q-field__bottom--stale"
+                            >
+                              <div class="q-field__messages col">
+                                <div role="alert">
+                                  Нельзя указывать прошедшее время!
+                                </div>
+                              </div>
+                            </div>
+                          </div></label
+                        ><label
+                          for="f_9eda486a-f586-4d38-ad6e-cf6b510979ad"
+                          class="q-field q-validation-component row no-wrap items-start s-time-input col-xs-5 q-input q-field--outlined q-field--highlighted q-field--float q-field--dense q-field--error"
+                          ><div
+                            class="q-field__inner relative-position col self-stretch"
+                          >
+                            <div
+                              tabindex="-1"
+                              class="q-field__control relative-position row no-wrap text-negative"
+                            >
+                              <div
+                                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                              >
+                                <input
+                                  tabindex="0"
+                                  placeholder="ЧЧ:ММ"
+                                  required="required"
+                                  maskdate="##.##.####"
+                                  masktime="##:##"
+                                  daterules='e=>!!e||"Необходимо указать дату!",e=>e.length===s.length||"Необходимо указать корректную дату",e=>t.rulesDateTime()||"Нельзя указывать прошедшее время!"'
+                                  timerules='e=>!!e||"Необходимо указать время!",e=>e.length===a.length||"Необходимо указать корректное время",e=>t.rulesDateTime()||"Нельзя указывать прошедшее время!"'
+                                  id="f_9eda486a-f586-4d38-ad6e-cf6b510979ad"
+                                  type="text"
+                                  class="q-field__native q-placeholder"
+                                  aria-invalid="true"
+                                />
+                              </div>
+                              <div
+                                class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                              >
+                                <i
+                                  aria-hidden="true"
+                                  role="presentation"
+                                  class="q-icon text-negative notranslate material-icons"
+                                  >error</i
+                                >
+                              </div>
+                              <div
+                                class="q-field__append q-field__marginal row no-wrap items-center"
+                              >
+                                <i
+                                  aria-hidden="true"
+                                  role="presentation"
+                                  class="cursor-pointer q-icon notranslate material-icons"
+                                  >access_time<!----></i
+                                >
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__bottom row items-start q-field__bottom--stale"
+                            >
+                              <div class="q-field__messages col">
+                                <div role="alert">
+                                  Нельзя указывать прошедшее время!
+                                </div>
+                              </div>
+                            </div>
+                          </div></label
+                        >
+                      </div>
+                    </div>
+                    <div
+                      id="intro_step_basic_duration"
+                      class="col-xs-12 col-md-6 s-form-input_wrapper"
+                    >
+                      <span class="s-label">Продолжительность сеанса ВКС</span
+                      ><span class="s-label-required"></span
+                      ><span class="q-ml-xs"
+                        ><i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="help-icon q-icon notranslate material-icons bottom-indent"
+                          >info_outline<!----></i
+                        ></span
+                      ><label
+                        for="f_220afd4b-6c62-49e9-be14-8ab4eabdc687"
+                        class="q-field q-validation-component row no-wrap items-start s-select q-select q-field--auto-height q-select--without-input q-select--without-chips q-select--single q-field--outlined q-field--float q-field--dense"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                            >
+                              <div class="q-field__native row items-center">
+                                <span>30 мин.</span
+                                ><input
+                                  id="f_220afd4b-6c62-49e9-be14-8ab4eabdc687"
+                                  readonly="readonly"
+                                  tabindex="0"
+                                  role="combobox"
+                                  aria-readonly="false"
+                                  aria-autocomplete="none"
+                                  aria-expanded="false"
+                                  aria-controls="f_220afd4b-6c62-49e9-be14-8ab4eabdc687_lb"
+                                  class="q-select__focus-target"
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-select__dropdown-icon q-icon notranslate material-icons"
+                                >arrow_drop_down</i
+                              >
+                            </div>
+                            <!---->
+                          </div>
+                        </div></label
+                      >
+                    </div>
+                    <div class="col-xs-12 s-form-input_wrapper">
+                      <div
+                        class="rounded-borders q-list q-list--bordered"
+                        id="intro_step_basic_recurrence"
+                      >
+                        <div
+                          class="q-expansion-item q-item-type q-expansion-item--collapsed q-expansion-item--standard"
+                        >
+                          <div
+                            class="q-expansion-item__container relative-position"
+                          >
+                            <div
+                              role="button"
+                              tabindex="0"
+                              class="q-item q-item-type row no-wrap q-item--dense q-item--clickable q-link cursor-pointer q-focusable q-hoverable"
+                              aria-expanded="false"
+                              aria-controls="e_6c4f8035-4a77-4fdc-848a-2e1199d0defe"
+                              aria-label='Расширьте "Повторять сеанс ВКС"'
+                            >
+                              <div tabindex="-1" class="q-focus-helper"></div>
+                              <div
+                                class="q-item__section column q-item__section--main justify-center"
+                              >
+                                <div class="q-item__label">
+                                  Повторять сеанс ВКС
+                                </div>
+                              </div>
+                              <div
+                                class="q-item__section column q-focusable relative-position cursor-pointer q-item__section--side justify-center s-icon-color"
+                              >
+                                <i
+                                  aria-hidden="true"
+                                  role="presentation"
+                                  class="q-expansion-item__toggle-icon q-icon notranslate material-icons"
+                                  >check_box_outline_blank</i
+                                >
+                              </div>
+                            </div>
+                            <div
+                              id="e_6c4f8035-4a77-4fdc-848a-2e1199d0defe"
+                              class="q-expansion-item__content relative-position"
+                              style="display: none"
+                            >
+                              <div class="s-form-input_wrapper">
+                                <div class="column">
+                                  <span class="s-label q-mt-sm"
+                                    >Дни повторения</span
+                                  ><label
+                                    for="f_921a65e9-80a7-46bb-931f-9f87a6999737"
+                                    class="q-field q-validation-component row no-wrap items-start row week-days-repeat q-field--standard q-field--dense q-field--auto-height"
+                                    ><div
+                                      class="q-field__inner relative-position col self-stretch"
+                                    >
+                                      <div
+                                        tabindex="-1"
+                                        class="q-field__control relative-position row no-wrap"
+                                      >
+                                        <div
+                                          class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                                        >
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Пн</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Вт</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Ср</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Чт</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Пт</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense disabled"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Сб</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              tabindex="0"
+                                              type="button"
+                                              class="q-btn q-btn-item non-selectable no-outline s-btn--repeat q-mr-sm q-btn--flat q-btn--round q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap q-btn--dense"
+                                              style="font-size: 14px"
+                                            >
+                                              <span
+                                                class="q-focus-helper"
+                                              ></span
+                                              ><span
+                                                class="q-btn__wrapper col row q-anchor--skip"
+                                                ><span
+                                                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                                                  ><span class="block"
+                                                    >Вс</span
+                                                  ></span
+                                                ></span
+                                              >
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div></label
+                                  ><span class="s-label"
+                                    >Интервал повторения</span
+                                  ><label
+                                    for="f_f92b223d-00f0-4ff4-99d2-335ca4366414"
+                                    class="q-field q-validation-component row no-wrap items-start full-width s-form-input required q-input q-field--outlined q-field--float q-field--labeled q-field--dense"
+                                    ><div
+                                      class="q-field__inner relative-position col self-stretch"
+                                    >
+                                      <div
+                                        tabindex="-1"
+                                        class="q-field__control relative-position row no-wrap"
+                                      >
+                                        <div
+                                          class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                                        >
+                                          <input
+                                            tabindex="0"
+                                            aria-label="Неделя"
+                                            name="interval-recurrence"
+                                            required="required"
+                                            id="f_f92b223d-00f0-4ff4-99d2-335ca4366414"
+                                            type="number"
+                                            class="q-field__native q-placeholder"
+                                          />
+                                          <div
+                                            class="q-field__label no-pointer-events absolute ellipsis"
+                                          >
+                                            Неделя
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div></label
+                                  >
+                                </div>
+                                <div class="column">
+                                  <span class="s-label q-mt-sm">Окончание</span>
+                                  <div class="row">
+                                    <div
+                                      tabindex="0"
+                                      role="radio"
+                                      aria-label="Повторять до выбранной даты"
+                                      aria-checked="true"
+                                      class="col-xs-12 q-radio cursor-pointer no-outline row inline no-wrap items-center"
+                                    >
+                                      <div
+                                        aria-hidden="true"
+                                        class="q-radio__inner relative-position q-radio__inner--truthy"
+                                      >
+                                        <input
+                                          type="radio"
+                                          class="hidden q-radio__native q-ma-none q-pa-none"
+                                        /><svg
+                                          focusable="false"
+                                          viewBox="0 0 24 24"
+                                          class="q-radio__bg absolute non-selectable"
+                                        >
+                                          <path
+                                            d="M12,22a10,10 0 0 1 -10,-10a10,10 0 0 1 10,-10a10,10 0 0 1 10,10a10,10 0 0 1 -10,10m0,-22a12,12 0 0 0 -12,12a12,12 0 0 0 12,12a12,12 0 0 0 12,-12a12,12 0 0 0 -12,-12"
+                                          ></path>
+                                          <path
+                                            d="M12,6a6,6 0 0 0 -6,6a6,6 0 0 0 6,6a6,6 0 0 0 6,-6a6,6 0 0 0 -6,-6"
+                                            class="q-radio__check"
+                                          ></path>
+                                        </svg>
+                                      </div>
+                                      <span
+                                        tabindex="-1"
+                                        class="no-outline"
+                                      ></span>
+                                      <div
+                                        class="q-radio__label q-anchor--skip"
+                                      >
+                                        Повторять до выбранной даты
+                                      </div>
+                                    </div>
+                                    <label
+                                      for="f_ce3b435c-60ce-44e8-b1b2-85392918e097"
+                                      class="q-field q-validation-component row no-wrap items-start s-date-input col-xs-12 q-input q-field--outlined q-field--float q-field--dense"
+                                      ><div
+                                        class="q-field__inner relative-position col self-stretch"
+                                      >
+                                        <div
+                                          tabindex="-1"
+                                          class="q-field__control relative-position row no-wrap"
+                                        >
+                                          <div
+                                            class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                                          >
+                                            <input
+                                              tabindex="0"
+                                              placeholder="ДД.ММ.ГГГГ"
+                                              required="required"
+                                              maskdate="##.##.####"
+                                              masktime="##:##"
+                                              daterules='e=>!!e||"Необходимо указать дату!",e=>e.length===s.length||"Необходимо указать корректную дату"'
+                                              timerules='e=>!!e||"Необходимо указать время!",e=>e.length===a.length||"Необходимо указать корректное время"'
+                                              id="f_ce3b435c-60ce-44e8-b1b2-85392918e097"
+                                              type="text"
+                                              class="q-field__native q-placeholder"
+                                            />
+                                          </div>
+                                          <div
+                                            class="q-field__append q-field__marginal row no-wrap items-center"
+                                          >
+                                            <i
+                                              aria-hidden="true"
+                                              role="presentation"
+                                              class="cursor-pointer q-icon notranslate material-icons"
+                                              >event<!----></i
+                                            >
+                                          </div>
+                                        </div>
+                                      </div></label
+                                    >
+                                    <div
+                                      tabindex="0"
+                                      role="radio"
+                                      aria-label="Повторять ВКС указанное количество раз"
+                                      aria-checked="false"
+                                      class="col-xs-12 q-radio cursor-pointer no-outline row inline no-wrap items-center"
+                                    >
+                                      <div
+                                        aria-hidden="true"
+                                        class="q-radio__inner relative-position q-radio__inner--falsy"
+                                      >
+                                        <input
+                                          type="radio"
+                                          class="hidden q-radio__native q-ma-none q-pa-none"
+                                        /><svg
+                                          focusable="false"
+                                          viewBox="0 0 24 24"
+                                          class="q-radio__bg absolute non-selectable"
+                                        >
+                                          <path
+                                            d="M12,22a10,10 0 0 1 -10,-10a10,10 0 0 1 10,-10a10,10 0 0 1 10,10a10,10 0 0 1 -10,10m0,-22a12,12 0 0 0 -12,12a12,12 0 0 0 12,12a12,12 0 0 0 12,-12a12,12 0 0 0 -12,-12"
+                                          ></path>
+                                          <path
+                                            d="M12,6a6,6 0 0 0 -6,6a6,6 0 0 0 6,6a6,6 0 0 0 6,-6a6,6 0 0 0 -6,-6"
+                                            class="q-radio__check"
+                                          ></path>
+                                        </svg>
+                                      </div>
+                                      <span
+                                        tabindex="-1"
+                                        class="no-outline"
+                                      ></span>
+                                      <div
+                                        class="q-radio__label q-anchor--skip"
+                                      >
+                                        Повторять ВКС указанное количество раз
+                                      </div>
+                                    </div>
+                                    <label
+                                      for="f_db3d3b01-9fd2-4154-ad96-441ee0f55dca"
+                                      aria-readonly="true"
+                                      class="q-field q-validation-component row no-wrap items-start full-width s-form-input required q-input q-field--outlined q-field--labeled q-field--dense q-field--readonly"
+                                      ><div
+                                        class="q-field__inner relative-position col self-stretch"
+                                      >
+                                        <div
+                                          tabindex="-1"
+                                          class="q-field__control relative-position row no-wrap"
+                                        >
+                                          <div
+                                            class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                                          >
+                                            <input
+                                              tabindex="0"
+                                              aria-label="Повторов"
+                                              name="count-recurrence"
+                                              required="required"
+                                              id="f_db3d3b01-9fd2-4154-ad96-441ee0f55dca"
+                                              type="number"
+                                              readonly="readonly"
+                                              class="q-field__native q-placeholder"
+                                            />
+                                            <div
+                                              class="q-field__label no-pointer-events absolute ellipsis"
+                                            >
+                                              Повторов
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div></label
+                                    >
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 s-form-label_wrapper">
+                      <span class="s-label">Организатор</span
+                      ><span class="q-ml-xs"
+                        ><i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="help-icon q-icon notranslate material-icons bottom-indent"
+                          >info_outline<!----></i
+                        ></span
+                      >
+                    </div>
+                    <div class="col-xs-12 s-form-input_wrapper">
+                      <span class="q-ml-xs s-form__label-action">
+                        Хантатонов Хантатон
+                      </span>
+                    </div>
+                  </div>
+                </form>
+                <div class="row justify-end">
+                  <button
+                    tabindex="0"
+                    type="button"
+                    class="q-btn q-btn-item non-selectable no-outline s-btn--inverse secondary q-btn--outline q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                    id="intro_step_basic_next"
+                  >
+                    <span class="q-focus-helper"></span
+                    ><span class="q-btn__wrapper col row q-anchor--skip"
+                      ><span
+                        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                        ><span class="block">Далее</span
+                        ><i
+                          aria-hidden="true"
+                          role="img"
+                          class="q-icon on-right notranslate material-icons"
+                          >arrow_downward</i
+                        ></span
+                      ></span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="row col-xs-12 s-step__wrapper"
+              id="intro_step_participant"
+            >
+              <div class="row col-xs-12 s-step cursor-pointer base-padding-all">
+                <div
+                  class="col-xs-1 row justify-center items-center s-step__circle-wrapper"
+                >
+                  <div class="s-step__circle row items-center justify-center">
+                    <i
+                      aria-hidden="true"
+                      role="presentation"
+                      class="s-icon--medium q-icon text-primary notranslate material-icons"
+                      >group_add</i
+                    >
+                  </div>
+                </div>
+                <div class="col-xs-11 s-step__text row items-center">
+                  <div class="col-xs-12 row">Участники</div>
+                  <div class="col-xs-12 s-step__text--caption"></div>
+                </div>
+              </div>
+              <div class="col-xs-12 s-stepper__inner" style="display: none">
+                <form class="q-form q-mb-xs" id="intro_step_participant_empty">
+                  <div class="row base-padding-top">
+                    <div
+                      id="intro_step_participant_list"
+                      class="col-xs-12 s-form-input_wrapper"
+                    >
+                      <div class="col-xs-12">
+                        <span class="s-label">Участники</span
+                        ><span class="s-label-required"></span
+                        ><span class="q-ml-xs"
+                          ><i
+                            aria-hidden="true"
+                            role="presentation"
+                            class="help-icon q-icon notranslate material-icons bottom-indent"
+                            >info_outline<!----></i
+                          ></span
+                        >
+                      </div>
+                      <label
+                        for="f_11d5d920-2d11-4653-aca4-aed1571732dc"
+                        class="q-field q-validation-component row no-wrap items-start s-select required q-select q-field--auto-height q-select--with-input q-select--with-chips q-select--multiple q-field--outlined q-field--highlighted q-field--dense q-field--error"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap text-negative"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                            >
+                              <div class="q-field__native row items-center">
+                                <input
+                                  type="search"
+                                  tabindex="0"
+                                  role="combobox"
+                                  aria-readonly="false"
+                                  aria-autocomplete="list"
+                                  aria-expanded="false"
+                                  aria-controls="f_11d5d920-2d11-4653-aca4-aed1571732dc_lb"
+                                  placeholder="Начните вводить имя или почту или вставьте E-mail списком"
+                                  id="f_11d5d920-2d11-4653-aca4-aed1571732dc"
+                                  autocomplete="filter-participants"
+                                  class="q-field__input q-placeholder col"
+                                  aria-invalid="true"
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-icon text-negative notranslate material-icons"
+                                >error</i
+                              >
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-select__dropdown-icon q-icon notranslate material-icons"
+                                >arrow_drop_down</i
+                              >
+                            </div>
+                            <!---->
+                          </div>
+                          <div
+                            class="q-field__bottom row items-start q-field__bottom--stale"
+                          >
+                            <div class="q-field__messages col">
+                              <div role="alert">
+                                Необходимо выбрать минимум 2-х участников или
+                                выбрать группу
+                              </div>
+                            </div>
+                          </div>
+                        </div></label
+                      >
+                    </div>
+                    <!---->
+                    <div
+                      id="intro_step_participant_group"
+                      class="col-xs-12 s-form-input_wrapper"
+                    >
+                      <div class="col-xs-12">
+                        <span class="s-label">Группа участников</span
+                        ><span class="q-ml-xs"
+                          ><i
+                            aria-hidden="true"
+                            role="presentation"
+                            class="help-icon q-icon notranslate material-icons bottom-indent"
+                            >info_outline<!----></i
+                          ></span
+                        >
+                      </div>
+                      <label
+                        for="f_f23d9e2c-5dfb-4dcd-b90f-e530696ae661"
+                        class="q-field q-validation-component row no-wrap items-start s-select required q-select q-field--auto-height q-select--with-input q-select--with-chips q-select--multiple q-field--outlined q-field--dense"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                            >
+                              <div class="q-field__native row items-center">
+                                <input
+                                  type="search"
+                                  tabindex="0"
+                                  role="combobox"
+                                  aria-readonly="false"
+                                  aria-autocomplete="list"
+                                  aria-expanded="false"
+                                  aria-controls="f_f23d9e2c-5dfb-4dcd-b90f-e530696ae661_lb"
+                                  placeholder="Начните вводить название группы"
+                                  id="f_f23d9e2c-5dfb-4dcd-b90f-e530696ae661"
+                                  class="q-field__input q-placeholder col"
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-select__dropdown-icon q-icon notranslate material-icons"
+                                >arrow_drop_down</i
+                              >
+                            </div>
+                            <!---->
+                          </div>
+                        </div></label
+                      >
+                    </div>
+                    <div class="col-xs-12 s-form-input_wrapper"><!----></div>
+                    <div
+                      id="intro_step_participant_count"
+                      class="col-xs-12 col-md-6 row no-wrap justify-start items-center s-form-input_wrapper"
+                    >
+                      <label
+                        for="f_aac3a8fa-2f7a-4179-972a-b9eaae38272a"
+                        class="q-field q-validation-component row no-wrap items-start full-width s-form-input required q-input q-field--outlined q-field--float q-field--labeled q-field--dense"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                            >
+                              <input
+                                tabindex="0"
+                                aria-label="Максимальное кол-во участников"
+                                name="count-participants"
+                                required="required"
+                                placeholder="Введите максимальное количество участников"
+                                id="f_aac3a8fa-2f7a-4179-972a-b9eaae38272a"
+                                type="number"
+                                class="q-field__native q-placeholder"
+                              />
+                              <div
+                                class="q-field__label no-pointer-events absolute ellipsis"
+                              >
+                                Максимальное кол-во участников
+                              </div>
+                            </div>
+                          </div>
+                        </div></label
+                      ><span class="q-ml-xs"
+                        ><i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="help-icon q-icon notranslate material-icons"
+                          >info_outline<!----></i
+                        ></span
+                      >
+                    </div>
+                    <div
+                      id="intro_step_participant_notification"
+                      class="col-xs-12 col-md-6 s-form-input_wrapper row no-wrap justify-start items-center"
+                    >
+                      <label
+                        for="f_f1da0f4b-b7cf-4e9b-b144-42649605bc42"
+                        class="q-field q-validation-component row no-wrap items-start full-width s-select q-select q-field--auto-height q-select--without-input q-select--without-chips q-select--single q-field--outlined q-field--labeled q-field--dense"
+                        ><div
+                          class="q-field__inner relative-position col self-stretch"
+                        >
+                          <div
+                            tabindex="-1"
+                            class="q-field__control relative-position row no-wrap"
+                          >
+                            <div
+                              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                            >
+                              <div class="q-field__native row items-center">
+                                <span></span
+                                ><input
+                                  id="f_f1da0f4b-b7cf-4e9b-b144-42649605bc42"
+                                  readonly="readonly"
+                                  tabindex="0"
+                                  role="combobox"
+                                  aria-label="Уведомить по почте"
+                                  aria-readonly="false"
+                                  aria-autocomplete="none"
+                                  aria-expanded="false"
+                                  aria-controls="f_f1da0f4b-b7cf-4e9b-b144-42649605bc42_lb"
+                                  class="q-select__focus-target"
+                                />
+                              </div>
+                              <div
+                                class="q-field__label no-pointer-events absolute ellipsis"
+                              >
+                                Уведомить по почте
+                              </div>
+                            </div>
+                            <div
+                              class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+                            >
+                              <i
+                                aria-hidden="true"
+                                role="presentation"
+                                class="q-select__dropdown-icon q-icon notranslate material-icons"
+                                >arrow_drop_down</i
+                              >
+                            </div>
+                          </div>
+                        </div></label
+                      ><span class="q-ml-xs"
+                        ><i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="help-icon q-icon notranslate material-icons"
+                          >info_outline<!----></i
+                        ></span
+                      >
+                    </div>
+                    <div
+                      id="intro_step_participant_notification_accept"
+                      class="col-xs-12 row no-wrap justify-start items-center s-form-input_wrapper"
+                    >
+                      <div
+                        tabindex="0"
+                        role="checkbox"
+                        aria-label="Получать уведомления на электронную почту по принявшим"
+                        aria-checked="false"
+                        class="q-checkbox cursor-pointer no-outline row inline no-wrap items-center"
+                      >
+                        <div
+                          aria-hidden="true"
+                          class="q-checkbox__inner relative-position non-selectable q-checkbox__inner--falsy"
+                        >
+                          <input
+                            type="checkbox"
+                            class="hidden q-checkbox__native absolute q-ma-none q-pa-none"
+                          />
+                          <div class="q-checkbox__bg absolute">
+                            <svg
+                              focusable="false"
+                              viewBox="0 0 24 24"
+                              class="q-checkbox__svg fit absolute-full"
+                            >
+                              <path
+                                fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                                class="q-checkbox__truthy"
+                              ></path>
+                              <path
+                                d="M4,14H20V10H4"
+                                class="q-checkbox__indet"
+                              ></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <span tabindex="-1" class="no-outline"></span>
+                        <div class="q-checkbox__label q-anchor--skip">
+                          Получать уведомления на электронную почту по принявшим
+                        </div>
+                      </div>
+                      <span class="q-ml-xs"
+                        ><i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="help-icon q-icon notranslate material-icons"
+                          >info_outline<!----></i
+                        ></span
+                      >
+                    </div>
+                    <div
+                      id="intro_step_participant_governor"
+                      class="col-xs-12 s-form-input_wrapper"
+                    >
+                      <div class="col-xs-12">
+                        <span class="s-label">Участие губернатора</span>
+                      </div>
+                      <div
+                        tabindex="0"
+                        role="checkbox"
+                        aria-label="Губернатор принимает участие в сеансе ВКС"
+                        aria-checked="false"
+                        class="q-checkbox cursor-pointer no-outline row inline no-wrap items-center"
+                      >
+                        <div
+                          aria-hidden="true"
+                          class="q-checkbox__inner relative-position non-selectable q-checkbox__inner--falsy"
+                        >
+                          <input
+                            type="checkbox"
+                            class="hidden q-checkbox__native absolute q-ma-none q-pa-none"
+                          />
+                          <div class="q-checkbox__bg absolute">
+                            <svg
+                              focusable="false"
+                              viewBox="0 0 24 24"
+                              class="q-checkbox__svg fit absolute-full"
+                            >
+                              <path
+                                fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                                class="q-checkbox__truthy"
+                              ></path>
+                              <path
+                                d="M4,14H20V10H4"
+                                class="q-checkbox__indet"
+                              ></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <span tabindex="-1" class="no-outline"></span>
+                        <div class="q-checkbox__label q-anchor--skip">
+                          Губернатор принимает участие в сеансе ВКС
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="row justify-end">
+                  <button
+                    tabindex="0"
+                    type="button"
+                    class="q-btn q-btn-item non-selectable no-outline s-btn--inverse secondary q-btn--outline q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                  >
+                    <span class="q-focus-helper"></span
+                    ><span class="q-btn__wrapper col row q-anchor--skip"
+                      ><span
+                        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                        ><span class="block">Далее</span
+                        ><i
+                          aria-hidden="true"
+                          role="img"
+                          class="q-icon on-right notranslate material-icons"
+                          >arrow_downward</i
+                        ></span
+                      ></span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row col-xs-12 s-step__wrapper" id="intro_step_settings">
+              <div class="row col-xs-12 s-step cursor-pointer base-padding-all">
+                <div
+                  class="col-xs-1 row justify-center items-center s-step__circle-wrapper"
+                >
+                  <div class="s-step__circle row items-center justify-center">
+                    <i
+                      aria-hidden="true"
+                      role="presentation"
+                      class="s-icon--medium q-icon text-primary notranslate material-icons"
+                      >settings</i
+                    >
+                  </div>
+                </div>
+                <div class="col-xs-11 s-step__text row items-center">
+                  <div class="col-xs-12 row">Настройки</div>
+                  <div class="col-xs-12 s-step__text--caption"></div>
+                </div>
+              </div>
+              <div class="col-xs-12 s-stepper__inner" style="display: none">
+                <form class="q-form q-mb-xs">
+                  <div class="row base-padding-top">
+                    <div
+                      id="intro_step_settings_backend"
+                      class="col-xs-12 row justify-start items-center s-form-input_wrapper"
+                    >
+                      <div class="col-xs-12 s-form-label_wrapper">
+                        <span class="s-label">Средство проведения</span>
+                      </div>
+                      <div
+                        class="q-btn-group row no-wrap inline q-btn-toggle s-btn-toggle q-btn-group--unelevated"
+                        style="overflow-x: auto"
+                      >
+                        <button
+                          tabindex="0"
+                          type="button"
+                          class="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle bg-primary text-white q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                          aria-pressed="true"
+                        >
+                          <span class="q-focus-helper"></span
+                          ><span class="q-btn__wrapper col row q-anchor--skip"
+                            ><span
+                              class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                              ><span class="block">Vinteo</span></span
+                            ></span
+                          ></button
+                        ><button
+                          tabindex="0"
+                          type="button"
+                          class="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                          aria-pressed="false"
+                        >
+                          <span class="q-focus-helper"></span
+                          ><span class="q-btn__wrapper col row q-anchor--skip"
+                            ><span
+                              class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                              ><span class="block"
+                                >Постоянная комната</span
+                              ></span
+                            ></span
+                          ></button
+                        ><button
+                          tabindex="0"
+                          type="button"
+                          class="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                          aria-pressed="false"
+                        >
+                          <span class="q-focus-helper"></span
+                          ><span class="q-btn__wrapper col row q-anchor--skip"
+                            ><span
+                              class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                              ><span class="block"
+                                >Внешняя платформа</span
+                              ></span
+                            ></span
+                          >
+                        </button>
+                      </div>
+                      <span class="q-ml-xs"
+                        ><i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="help-icon q-icon notranslate material-icons"
+                          >info_outline<!----></i
+                        ></span
+                      >
+                    </div>
+                    <div class="col-xs-12 s-form-label_wrapper">
+                      <span class="s-label"
+                        >Предварительные параметры конференции</span
+                      >
+                    </div>
+                    <div class="col-xs-12 s-form-input_wrapper">
+                      <div>
+                        <div
+                          tabindex="0"
+                          role="checkbox"
+                          aria-label="Необходимо записывать видео"
+                          aria-checked="true"
+                          class="q-checkbox cursor-pointer no-outline row inline no-wrap items-center"
+                        >
+                          <div
+                            aria-hidden="true"
+                            class="q-checkbox__inner relative-position non-selectable q-checkbox__inner--truthy text-brand"
+                          >
+                            <input
+                              type="checkbox"
+                              class="hidden q-checkbox__native absolute q-ma-none q-pa-none"
+                            />
+                            <div class="q-checkbox__bg absolute">
+                              <svg
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                class="q-checkbox__svg fit absolute-full"
+                              >
+                                <path
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                                  class="q-checkbox__truthy"
+                                ></path>
+                                <path
+                                  d="M4,14H20V10H4"
+                                  class="q-checkbox__indet"
+                                ></path>
+                              </svg>
+                            </div>
+                          </div>
+                          <span tabindex="-1" class="no-outline"></span>
+                          <div class="q-checkbox__label q-anchor--skip">
+                            Необходимо записывать видео
+                          </div>
+                        </div>
+                        <span class="q-ml-xs"
+                          ><i
+                            aria-hidden="true"
+                            role="presentation"
+                            class="help-icon q-icon notranslate material-icons"
+                            >info_outline<!----></i
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="row justify-end"><!----></div>
+              </div>
+            </div>
+            <!---->
+          </div>
+          <div class="row">
+            <!---->
+            <div
+              class="row justify-between full-width s-modal__form-footer q-pb-sm"
+            >
+              <div class="">
+                <button
+                  tabindex="0"
+                  type="button"
+                  class="q-btn q-btn-item non-selectable no-outline s-btn--inverse secondary q-mr-md q-btn--outline q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                >
+                  <span class="q-focus-helper"></span
+                  ><span class="q-btn__wrapper col row q-anchor--skip"
+                    ><span
+                      class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                      ><span class="block">Закрыть</span></span
+                    ></span
+                  ></button
+                ><button
+                  tabindex="0"
+                  type="button"
+                  class="q-btn q-btn-item non-selectable no-outline s-btn q-btn--flat q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                >
+                  <span class="q-focus-helper"></span
+                  ><span class="q-btn__wrapper col row q-anchor--skip"
+                    ><span
+                      class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                      ><span class="block">Сохранить</span></span
+                    ></span
+                  >
+                </button>
+              </div>
+              <div class=""><!----></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/quasar.umd.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/lang/ru.umd.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/icon-set/svg-material-icons.umd.prod.js"></script>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const message = ref("Привет, мир!");
+            const list = ref([false , false, false])
+          const updateMessage = () => {
+            message.value = "Сообщение обновлено!";
+          };
+          const setMenuView = (number)  => {
+            for (let index = 0; index < list.value.length; index++) {
+                list.value[index] = false;
+            }
+            list.value[number] = true;
+          }
+          return {
+            message,
+            updateMessage,
+            setMenuView
+          };
+        },
+      });
+
+      app.use(Quasar, {});
+      Quasar.Lang.set(Quasar.Lang.ru);
+      Quasar.IconSet.set(Quasar.IconSet.svgMaterialIcons);
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

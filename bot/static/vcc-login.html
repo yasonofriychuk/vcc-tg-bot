@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue 3 Composition API</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined|Material+Symbols+Rounded|Material+Symbols+Sharp"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@^7.0.0/css/materialdesignicons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://use.fontawesome.com/releases/v6.1.1/css/all.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/ionicons@^4.0.0/dist/css/ionicons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/eva-icons@^1.0.0/style/eva-icons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://themify.me/wp-content/themes/themify-v32/themify-icons/themify-icons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@^1.0.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/animate.css@^4.0.0/animate.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/quasar.prod.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link rel="stylesheet" href="./style.login.css" />
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <main
+        class="q-page auth__container column justify-center items-center"
+        style="min-height: 1309px"
+      >
+        <div class="auth__image-wrapper">
+          <img src="./logo.svg" alt="" class="auth__image" />
+        </div>
+
+        <div class="row justify items-center container is-desktop">
+          <div class="auth__wrapper">
+            <div class="auth__header">
+              <div class="auth__header-title">
+                <span>Планирование ВКС</span> <br /><span>
+                  Ханты-Мансийского автономного округа-Югры</span
+                >
+              </div>
+            </div>
+
+            <form class="q-form">
+              <div class="auth__card">
+                <label for="login" class="auth__label">Логин</label
+                ><label
+                  for="f_94d13fa4-69e6-4720-b087-0eb1916884e2"
+                  class="q-field q-validation-component row no-wrap items-start q-input q-field--outlined q-field--labeled q-field--dense q-field--with-bottom"
+                >
+                  <div
+                    class="q-field__inner relative-position col self-stretch"
+                  >
+                    <div
+                      tabindex="-1"
+                      class="q-field__control relative-position row no-wrap bg-white"
+                    >
+                      <div
+                        class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                      >
+                        <input
+                          tabindex="0"
+                          aria-label="Ваш Логин"
+                          name="login"
+                          id="f_94d13fa4-69e6-4720-b087-0eb1916884e2"
+                          type="text"
+                          class="q-field__native q-placeholder"
+                        />
+                        <div
+                          class="q-field__label no-pointer-events absolute ellipsis"
+                        >
+                          Ваш Логин
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="q-field__bottom row items-start q-field__bottom--animated"
+                    >
+                      <div class="q-field__messages col"></div>
+                    </div>
+                  </div> </label
+                ><label for="password" class="auth__label">Пароль</label
+                ><label
+                  for="f_dc46c2dd-c808-4959-a5ba-e242dc2f1219"
+                  class="q-field q-validation-component row no-wrap items-start q-input q-field--outlined q-field--labeled q-field--dense q-field--with-bottom"
+                >
+                  <div
+                    class="q-field__inner relative-position col self-stretch"
+                  >
+                    <div
+                      tabindex="-1"
+                      class="q-field__control relative-position row no-wrap bg-white"
+                    >
+                      <div
+                        class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+                      >
+                        <input
+                          tabindex="0"
+                          aria-label="Ваш пароль"
+                          name="password"
+                          id="f_dc46c2dd-c808-4959-a5ba-e242dc2f1219"
+                          type="password"
+                          class="q-field__native q-placeholder"
+                        />
+                       
+                      </div>
+                      <div
+                        class="q-field__append q-field__marginal row no-wrap items-center"
+                      >
+                        <i
+                          aria-hidden="true"
+                          role="presentation"
+                          class="q-icon notranslate material-icons"
+                          >visibility</i
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="q-field__bottom row items-start q-field__bottom--animated"
+                    >
+                      <div class="q-field__messages col"></div>
+                    </div>
+                  </div>
+                </label>
+                <button
+                  tabindex="0"
+                  type="submit"
+                  class="q-btn q-btn-item non-selectable no-outline auth__btn col-12 q-mt-sm q-btn--flat q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase q-btn--wrap"
+                >
+                  <span class="q-focus-helper"></span>
+                  <span class="q-btn__wrapper col row q-anchor--skip">
+                    <span
+                      class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                    >
+                      <span class="block">Войти</span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </form>
+            <div class="auth__footer text-center">
+              <span class="text-bold">Техническая поддержка:</span
+              ><a
+                href="mailto:helpdesk@admhmao.ru?subject=Планирование ВКС Ханты-Мансийского автономного округа-Югры"
+                target="_top"
+                rel="noopener noreferrer"
+                class="q-ml-xs auth__link"
+              >
+              </a>
+            </div>
+          </div>
+        </div>
+        <!---->
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/quasar.umd.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/lang/ru.umd.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.4/dist/icon-set/svg-material-icons.umd.prod.js"></script>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const message = ref("Привет, мир!");
+
+          const updateMessage = () => {
+            message.value = "Сообщение обновлено!";
+          };
+
+          return {
+            message,
+            updateMessage,
+          };
+        },
+      });
+
+      app.use(Quasar, {});
+      Quasar.Lang.set(Quasar.Lang.ru);
+      Quasar.IconSet.set(Quasar.IconSet.svgMaterialIcons);
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
