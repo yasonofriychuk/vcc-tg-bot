@@ -45,6 +45,7 @@ base_router.include_router(vcc_create_router)
 base_router.include_router(auth_router)
 
 app.include_router(base_router)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 if __name__ == "__main__":

@@ -45,3 +45,14 @@ async def auth_login(
 
     await bot.send_message(init_data.user_id, "Авторизация прошла успешно! Выбери чем могу помочь", reply_markup=reply_menu())
     return {"status": True}
+
+
+@router.get("/auth/jwt")
+async def auth_jwt(
+    init_data: HeaderInitParams,
+):
+    token = await auth.get_token(init_data.user_id)
+    if not token:
+        raise HTTPException(status_code=403, detail="Unauthorized")
+
+    return {"token": token}
