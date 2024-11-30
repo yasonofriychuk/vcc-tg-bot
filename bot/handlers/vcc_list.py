@@ -8,7 +8,7 @@ from client import AuthenticatedClient
 from client.models import MeetingSortingFields
 from client.types import Response
 from config import API_BASE_URL, WEB_BASE_URL
-from presenters.date import present_date, present_duration
+from presenters.date import present_date, format_duration
 from services.auth import Auth
 from client.api.meetings import get_meetings_meetings_get
 from client.models.meeting_list import MeetingList
@@ -69,12 +69,12 @@ async def show_meetings(callback: CallbackQuery):
     total = response_meetings.parsed.rows_number
 
     msg_parts = [
-        f"Встреча {page} из {total}.",
+        f"Встреча <i>{page}</i> из {total}.",
         "",
-        f"{meeting.name} ({meeting.participants_count} участ.)",
-        f"Дата и время проведения: {present_date(meeting.started_at, meeting.ended_at)}",
-        f"Продолжительность: {present_duration(meeting.duration)}",
-        f"Участников: {meeting.participants_count}",
+        f"<b>Название:</b> {meeting.name}",
+        f"<b>Дата и время проведения:</b> {present_date(meeting.started_at, meeting.ended_at)}",
+        f"<b>Продолжительность:</b> {format_duration(meeting.duration)}",
+        f"<b>Участников:</b> {meeting.participants_count}",
     ]
 
     buttons = []
@@ -91,7 +91,7 @@ async def show_meetings(callback: CallbackQuery):
     await callback.message.edit_text("\n".join(msg_parts), reply_markup=InlineKeyboardMarkup(inline_keyboard=[
         [detail_button],
         buttons
-    ]))
+    ]), parse_mode="HTML")
 
 
 def register_vcc_list_handlers(dp: Dispatcher):

@@ -12,30 +12,10 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@1.4.6/dist/flowbite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="/static/script.js"></script>
+    <script src="./script.js"></script>
 </head>
 
 <body class="h-screen bg-gray-100 flex items-center justify-center">
-
-    <!-- Форма поиска -->
-    <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 class="text-2xl font-semibold text-center mb-6">Поиск встреч</h2>
-        <form id="search-form" action="#" method="POST">
-            <div class="mb-4">
-                <label for="date_from" class="block text-sm font-medium text-gray-700">Дата начала</label>
-                <input type="text" id="date_from" name="date_from" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required placeholder="Выберите дату" />
-            </div>
-
-            <div class="mb-6">
-                <label for="date_to" class="block text-sm font-medium text-gray-700">Дата окончания</label>
-                <input type="text" id="date_to" name="date_to" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required placeholder="Выберите дату" />
-            </div>
-
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Поиск</button>
-        </form>
-    </div>
-
     <!-- Toast уведомление (всплывающее сообщение) -->
     <div id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 hidden absolute top-1/4 left-1/2 transform -translate-x-1/2 z-50 opacity-0 transition-opacity duration-500" role="alert">
         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
@@ -47,22 +27,11 @@
         <div class="ms-3 text-sm font-normal" id="toast-message">Произошла ошибка!</div>
     </div>
 
+    <button onclick="c()">Click</button>
+
 <script>
-    flatpickr("#date_from", {
-        dateFormat: "Y-m-d",
-    });
-
-    flatpickr("#date_to", {
-        dateFormat: "Y-m-d",
-    });
-
     // Обработка отправки формы поиска
-    document.getElementById('search-form').addEventListener('submit', async function(e) {
-        e.preventDefault(); // Предотвратить стандартную отправку формы
-
-        const dateFrom = document.getElementById('date_from').value;
-        const dateTo = document.getElementById('date_to').value;
-
+    const c = async function(){
         try {
             const response = await fetch('/api/vcc/list/', {
                 method: 'POST',
@@ -72,8 +41,8 @@
                         'init-data': window.Telegram.WebApp.initData
                     },
                 body: JSON.stringify({
-                    date_from: dateFrom,
-                    date_to: dateTo,
+                    date_from: '2024-01-01',
+                    date_to: '2024-12-31',
                 }),
             });
 
@@ -85,7 +54,8 @@
         } catch (error) {
             showToast('Произошла ошибка, попробуйте позже.');
         }
-    });
+    }
+
 </script>
 
 </body>
