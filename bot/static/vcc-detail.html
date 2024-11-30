@@ -1,10 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Данные о встрече</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
+<body class="bg-gray-100 flex flex-col justify-center items-center min-h-screen">
+    <div class="w-full max-w-xl p-6 bg-white rounded-lg shadow-lg my-10">
+        <h2 class="text-2xl font-semibold text-center mb-6">Данные о встрече</h2>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Название ВКС</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">Название вашей встречи</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Место проведения</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">Онлайн</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Помещение</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">Комната 1</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Дата и время начала</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">2024-12-01 10:00</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Продолжительность (в минутах)</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">60</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Организатор</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">Иван Иванов</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Участники</label>
+            <ul id="participants-list" class="mt-2 space-y-2">
+                <li class="px-4 py-2 border border-gray-300 rounded-md bg-gray-100">email1@example.com</li>
+                <li class="px-4 py-2 border border-gray-300 rounded-md bg-gray-100">email2@example.com</li>
+                <li class="px-4 py-2 border border-gray-300 rounded-md bg-gray-100">email3@example.com</li>
+            </ul>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Максимальное количество участников</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">10</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Средство проведения</label>
+            <p class="mt-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100">Zoom</p>
+        </div>
+
+        <div class="mt-6 text-center">
+            <a href="">
+                <button
+                class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                Присоединиться к встрече
+            </button>
+            </a>
+        </div>
+    </div>
 </body>
+
 </html>
