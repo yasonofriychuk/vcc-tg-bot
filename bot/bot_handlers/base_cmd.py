@@ -30,4 +30,4 @@ async def menu_command(message: Message):
 
 def register_start_handlers(dp: Dispatcher):
     dp.message.register(start_command, Command("start"))
-    dp.message.register(start_command, Command("menu"))
+    dp.message.register(menu_command, Command("menu"))
