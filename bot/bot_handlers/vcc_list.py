@@ -1,22 +1,98 @@
 import json
-from datetime import datetime
 
 from aiogram import Dispatcher
-from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
-from client import AuthenticatedClient
-from client.models import MeetingSortingFields
-from client.types import Response
-from config import API_BASE_URL, WEB_BASE_URL
+from client.models import MeetingBare
 from presenters.date import present_date, format_duration
-from presenters.message import get_error_message, get_vks_error_message
-from services.auth import Auth
-from client.api.meetings import get_meetings_meetings_get
-from client.models.meeting_list import MeetingList
+from presenters.message import get_error_message
+from services.auth import Auth, TokenData
 from services.data_saver import ContextSaver
+from services.meetings_client import MeetingsClient, dict_to_model
 
 auth = Auth()
 saver = ContextSaver()
+meet_client = MeetingsClient()
+
+
+def present_vcc_msg(
+        page: int,
+        total: int,
+        meeting: MeetingBare,
+        meeting_more: dict,
+) -> str:
+    msg_parts = [
+        f"Встреча <i>{page}</i> из {total}.",
+        "",
+        f"<u>Название:</u> {meeting.name}",
+        f"<u>Дата и время:</u> {present_date(meeting.started_at, meeting.ended_at)}",
+        f"<u>Продолжительность:</u> {format_duration(meeting.duration) if meeting.duration else 'Не указана'}",
+        f"<u>Платформа:</u> {meeting_more.get('backend', 'Внешняя платформа')}",
+        ""
+    ]
+
+    participant_list = []
+    for participant in meeting_more.get('participants', []):
+        full_name = " ".join(filter(lambda i: i, [
+            participant.get('lastName'),
+            participant.get('firstName'),
+            participant.get('middleName'),
+        ]))
+
+        approved_text = "✅" if participant.get("isApproved") else "❌"
+        participant_text = f"{full_name} {approved_text}"
+        if "email" in participant:
+            participant_text = f"<a href='mailto:{participant.get('email')}'>{full_name}</a> {approved_text}"
+
+        participant_list.append(participant_text)
+
+    if participant_list:
+        msg_parts.append(f"<u>Участники:</u>")
+        msg_parts.extend(participant_list)
+
+    return "\n".join(msg_parts)
+
+
+def need_ics(token: TokenData, meeting_more: dict) -> bool:
+    for participant in meeting_more.get('participants', []):
+        if participant.get("id", -1) == token.user.id:
+            return True
+
+    if meeting_more.get("createdUser", {}).get("id", -1) == token.user.id:
+        return True
+
+    if meeting_more.get("organizedUser", {}).get("id", -1) == token.user.id:
+        return True
+
+
+def present_vcc_buttons(
+        key: str,
+        token: TokenData,
+        page: int,
+        total: int,
+        meeting: MeetingBare,
+        meeting_more: dict,
+) -> InlineKeyboardMarkup:
+    buttons_row_1 = []
+    if need_ics(token, meeting_more):
+        buttons_row_1.append(InlineKeyboardButton(text="Добавить в календарь", callback_data=f"get_ics:{meeting.id}"))
+
+    if "organizerPermalink" in meeting_more:
+        buttons_row_1.append(InlineKeyboardButton(text="Ссылка", url=meeting_more.get("organizerPermalink")))
+    elif "permalink" in meeting_more:
+        buttons_row_1.append(InlineKeyboardButton(text="Ссылка", url=meeting_more.get("permalink")))
+
+    buttons_row_2 = []
+    if page > 1:
+        buttons_row_2.append(InlineKeyboardButton(text="⬅️", callback_data=f"show_meet:{page - 1}:{key}"))
+
+    if page < total:
+        buttons_row_2.append(InlineKeyboardButton(text="➡️", callback_data=f"show_meet:{page + 1}:{key}"))
+
+    return InlineKeyboardMarkup(inline_keyboard=[
+        buttons_row_1,
+        buttons_row_2
+    ])
 
 
 async def show_meetings(callback: CallbackQuery):
@@ -32,69 +108,33 @@ async def show_meetings(callback: CallbackQuery):
         await callback.answer()
         return
 
-    data_json = dict(json.loads(data))
-
-    from_datetime = datetime.fromisoformat(data_json.get("from_datetime"))
-    to_datetime = datetime.fromisoformat(data_json.get("to_datetime"))
-
-    client = AuthenticatedClient(base_url=API_BASE_URL, verify_ssl=False, token=token.original_token)
+    data_dict = dict(json.loads(data))
+    data_dict["page"] = page
 
     try:
-        async with client as client:
-            response_meetings: Response[MeetingList] = await get_meetings_meetings_get.asyncio_detailed(
-                client=client,
-                from_datetime=from_datetime,
-                to_datetime=to_datetime,
-                sort_by=MeetingSortingFields.STARTEDAT,
-                rows_per_page=1,
-                page=page
-            )
+        meetings, meeting_more = await meet_client.get_meeting_by_filter(token, dict_to_model(data_dict))
     except Exception as e:
         await callback.answer(get_error_message())
         return
 
-    if not response_meetings or response_meetings.status_code != 200:
-        await callback.answer(get_vks_error_message())
-        return
+    rows = meetings.rows_number
 
-    if not response_meetings.parsed.data:
+    if not rows or not meeting_more:
         await callback.message.edit_text(
             "Вы достигли конца списка",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="Назад", callback_data=f"show_meet:{max(page-1, 1)}:{key}")],
+                [InlineKeyboardButton(text="Назад", callback_data=f"show_meet:{max(page - 1, 1)}:{key}")],
             ])
         )
         return
 
-    meeting = response_meetings.parsed.data[0]
-    total = response_meetings.parsed.rows_number
+    total = meetings.rows_number
+    meeting = meetings.data[0]
 
-    msg_parts = [
-        f"Встреча <i>{page}</i> из {total}.",
-        "",
-        f"<u>Название:</u> {meeting.name}",
-        f"<u>Дата и время:</u> {present_date(meeting.started_at, meeting.ended_at)}",
-        f"<u>Продолжительность:</u> {format_duration(meeting.duration)}",
-        f"<u>Участников:</u> {meeting.participants_count}",
-    ]
+    msg = present_vcc_msg(page, total, meeting, meeting_more.to_dict())
+    markup = present_vcc_buttons(key, token, page, total, meeting, meeting_more.to_dict())
 
-    buttons = []
-    if page > 1:
-        buttons.append(InlineKeyboardButton(text="⬅️", callback_data=f"show_meet:{page-1}:{key}"))
-
-    if page < total:
-        buttons.append(InlineKeyboardButton(text="➡️", callback_data=f"show_meet:{page+1}:{key}"))
-
-    detail_button = InlineKeyboardButton(text="Подробнее", web_app=WebAppInfo(
-        url=f"{WEB_BASE_URL}/static/vcc-detail.html?meeting={meeting.id}"
-    ))
-
-    ics_button = InlineKeyboardButton(text="ICS приглашение", callback_data=f"get_ics:{meeting.id}")
-
-    await callback.message.edit_text("\n".join(msg_parts), reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-        [detail_button, ics_button],
-        buttons
-    ]), parse_mode="HTML")
+    await callback.message.edit_text(msg, reply_markup=markup, parse_mode="HTML")
 
 
 def register_vcc_list_handlers(dp: Dispatcher):

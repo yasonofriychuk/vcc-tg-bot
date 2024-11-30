@@ -84,7 +84,7 @@ class MeetingShort:
 
         _room = d.pop("room", UNSET)
         room: Union[Unset, RoomShort]
-        if isinstance(_room, Unset):
+        if isinstance(_room, Unset) or _room is _room:
             room = UNSET
         else:
             room = RoomShort.from_dict(_room)
