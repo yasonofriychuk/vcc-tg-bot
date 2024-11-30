@@ -8,7 +8,8 @@ from client.api.auth import login_auth_login_post
 from client.models import LoginOut, BodyLoginAuthLoginPost
 from client.types import Response
 from config import API_BASE_URL
-from keyboards.boards import reply_menu
+from presenters.boards import reply_menu
+from presenters.message import get_success_message
 from services.auth import Auth
 
 auth = Auth()
@@ -43,7 +44,7 @@ async def auth_login(
     if not await auth.set_token(init_data.user_id, response.parsed.token):
         raise HTTPException(500, "Internal Server Error")
 
-    await bot.send_message(init_data.user_id, "Авторизация прошла успешно! Выбери чем могу помочь", reply_markup=reply_menu())
+    await bot.send_message(init_data.user_id, get_success_message(), reply_markup=reply_menu())
     return {"status": True}
 
 

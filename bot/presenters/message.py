@@ -1,5 +1,8 @@
 from random import choice
 
+from services.auth import TokenData
+
+
 def get_success_message() -> str:
     return choice([
         "Авторизация прошла успешно! Чем могу помочь?",
@@ -38,7 +41,7 @@ def get_greetings_message() -> str:
     
     return choice(greeting_options)
 
-def get_greeting_message(token) -> str:
+def get_greeting_message(token: TokenData | None) -> str:
     greeting_options = [
         f"Привет, {token.user.login if token.user else 'пользователь'}! Я ВКС-бот. Чем могу помочь?",
         f"Здравствуйте, {token.user.login if token.user else 'пользователь'}! Я ваш ВКС-бот. Как могу помочь?",

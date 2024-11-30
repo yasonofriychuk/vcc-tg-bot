@@ -7,6 +7,8 @@ from client.models import MeetingList
 from client.types import Response
 from config import API_BASE_URL, REDIS_URL
 
+# TODO доделать прослойку с кешем
+
 
 class MeetingsClient:
     def __init__(self, redis_url: str = REDIS_URL):

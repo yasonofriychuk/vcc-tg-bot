@@ -11,8 +11,9 @@ from client.api.meetings import get_meetings_meetings_get
 from client.models import MeetingList
 from client.types import Response
 from config import API_BASE_URL
-from keyboards.boards import auth_keyboard
+from presenters.boards import auth_keyboard
 from presenters.date import plural
+from presenters.message import get_authorization_message
 from services.auth import Auth
 from bot import bot
 from services.data_saver import ContextSaver
@@ -57,7 +58,7 @@ async def vcc_list(
     if not token:
         await bot.send_message(
             init_data.user_id,
-            "Для использования этого функционала необходимо авторизоваться",
+            get_authorization_message(),
             reply_markup=auth_keyboard
         )
         return

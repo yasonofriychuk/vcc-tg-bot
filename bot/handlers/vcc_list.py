@@ -9,6 +9,7 @@ from client.models import MeetingSortingFields
 from client.types import Response
 from config import API_BASE_URL, WEB_BASE_URL
 from presenters.date import present_date, format_duration
+from presenters.message import get_error_message, get_vks_error_message
 from services.auth import Auth
 from client.api.meetings import get_meetings_meetings_get
 from client.models.meeting_list import MeetingList
@@ -49,11 +50,11 @@ async def show_meetings(callback: CallbackQuery):
                 page=page
             )
     except Exception as e:
-        await callback.answer("Что-то пошло не так, повторите попытку позже")
+        await callback.answer(get_error_message())
         return
 
     if not response_meetings or response_meetings.status_code != 200:
-        await callback.answer(f"Ой, сайт ВКС упал. Повторите попытку позже")
+        await callback.answer(get_vks_error_message())
         return
 
     if not response_meetings.parsed.data:
