@@ -1,23 +1,33 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Set
 from random import choice
 import locale
 
-# def present_date(start: datetime, end: datetime) -> str:
-#     return "1 сентября 14:00 - 16:00"
-#     return "1 сентября 23:00 - 2 сентября 01:00"
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
+
+def format_duration(duration: timedelta) -> str:
+    if isinstance(duration, int):
+        duration = timedelta(seconds=duration)
+    days = duration.days
+    hours = duration.seconds // 3600
+    minutes = (duration.seconds % 3600) // 60
+    seconds = duration.seconds % 60
+    result = []
+    if days > 0:
+        result.append(f"{days} д{'ень' if days == 1 else 'ней'}")
+    if hours > 0:
+        result.append(f"{hours} ч{'ас' if hours == 1 else 'аса'}")
+    if minutes > 0:
+        result.append(f"{minutes} мин")
+    if seconds > 0:
+        result.append(f"{seconds} сек")
+    return ' '.join(result) if result else "0 сек"
+
 def present_date(start: datetime, end: datetime) -> str:
     if start.date() == end.date():
         return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.hour}:{end.minute:02d}"
     else:
         return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.day} {end.strftime('%B')} {end.year} {end.hour}:{end.minute:02d}"
-
-# def plural(number: int, forms: Set[str, str, str]) -> str:
-#     return "1 мероприятие"
-#     return "2 мероприятия"
-#     return "6 мероприятий"
-
 
 def plural(number: int, forms: set[str, str, str]) -> str:
     singular, few, many = forms
@@ -28,11 +38,7 @@ def plural(number: int, forms: set[str, str, str]) -> str:
         return f"{number} {few}"
     else:
         return f"{number} {many}"
-# def error_msg() -> str:
-#     return choice([
-#         "Авторизация прошла успешно! Выбери чем могу помочь",
-#         "Авторизация прошла успешно! Выбери чем могу помочь",
-#     ])
+
 def get_success_message() -> str:
     return choice([
         "Авторизация прошла успешно! Чем могу помочь?",
