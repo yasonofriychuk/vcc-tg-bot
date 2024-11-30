@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from api.deps.security import HeaderInitParams
+from api_handlers.deps.security import HeaderInitParams
 from client import AuthenticatedClient
 from client.api.meetings import get_meetings_meetings_get
 from client.models import MeetingList

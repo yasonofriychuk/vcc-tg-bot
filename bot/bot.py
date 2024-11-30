@@ -4,7 +4,7 @@ import redis.asyncio as redis
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 
-from handlers import register_all_handlers
+from bot_handlers import register_all_handlers
 from config import TELEGRAM_API_TOKEN, REDIS_URL
 
 bot = Bot(token=TELEGRAM_API_TOKEN)

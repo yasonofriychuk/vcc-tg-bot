@@ -89,8 +89,10 @@ async def show_meetings(callback: CallbackQuery):
         url=f"{WEB_BASE_URL}/static/vcc-detail.html?meeting={meeting.id}"
     ))
 
+    ics_button = InlineKeyboardButton(text="ICS приглашение", callback_data=f"get_ics:{meeting.id}")
+
     await callback.message.edit_text("\n".join(msg_parts), reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-        [detail_button],
+        [detail_button, ics_button],
         buttons
     ]), parse_mode="HTML")
 

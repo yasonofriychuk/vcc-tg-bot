@@ -90,6 +90,7 @@ class Auth:
             token = await self.redis.get(f"user_token:{user_id}")
             return token
         except Exception as e:
+            print(e)
             return None
 
     async def __refresh(self, user_id: int, refresh_token: str) -> Optional[TokenData]:

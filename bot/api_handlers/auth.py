@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from api.deps.security import HeaderInitParams
+from api_handlers.deps.security import HeaderInitParams
 from client import Client
 from bot import bot
 from client.api.auth import login_auth_login_post

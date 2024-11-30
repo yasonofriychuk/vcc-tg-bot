@@ -9,8 +9,8 @@ from starlette.staticfiles import StaticFiles
 
 from config import WEB_BASE_URL, API_PORT
 from bot import bot, dp
-from api.vcc_list import router as vcc_list_router
-from api.auth import router as auth_router
+from api_handlers.vcc_list import router as vcc_list_router
+from api_handlers.auth import router as auth_router
 
 
 @asynccontextmanager

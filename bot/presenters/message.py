@@ -73,3 +73,9 @@ def get_vks_error_message() -> str:
     ]
     
     return choice(vks_error_options)
+
+def get_ics_not_found() -> str:
+    options = [
+        "ICS приглашение не найдено"
+    ]
+    return choice(options)
