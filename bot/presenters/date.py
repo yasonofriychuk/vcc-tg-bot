@@ -2,8 +2,18 @@ from datetime import datetime, timedelta
 from typing import Set
 from random import choice
 import locale
+from contextlib import contextmanager
 
-locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
+
+@contextmanager
+def set_locale(locale_name):
+    old_locale = locale.getlocale(locale.LC_TIME)
+    try:
+        locale.setlocale(locale.LC_TIME, locale_name)
+        yield
+    finally:
+        locale.setlocale(locale.LC_TIME, old_locale)
+
 
 def format_duration(duration: timedelta | int) -> str:
     if isinstance(duration, int):
@@ -24,11 +34,13 @@ def format_duration(duration: timedelta | int) -> str:
         result.append(f"{seconds} сек")
     return ' '.join(result) if result else "0 сек"
 
-def present_date(start: datetime, end: datetime) -> str:
-    if start.date() == end.date():
-        return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.hour}:{end.minute:02d}"
 
-    return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.day} {end.strftime('%B')} {end.year} {end.hour}:{end.minute:02d}"
+def present_date(start: datetime, end: datetime) -> str:
+    with set_locale('ru_RU.UTF-8'):
+        if start.date() == end.date():
+            return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.hour}:{end.minute:02d}"
+    
+        return f"{start.day} {start.strftime('%B')} {start.year} {start.hour}:{start.minute:02d} - {end.day} {end.strftime('%B')} {end.year} {end.hour}:{end.minute:02d}"
 
 
 def plural(number: int, forms: set[str, str, str]) -> str:
