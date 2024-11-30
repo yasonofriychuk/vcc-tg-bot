@@ -33,8 +33,8 @@ async def show_meetings(callback: CallbackQuery):
 
     data_json = dict(json.loads(data))
 
-    from_datetime = datetime.fromisoformat(data_json.get("date_from"))
-    to_datetime = datetime.fromisoformat(data_json.get("date_to"))
+    from_datetime = datetime.fromisoformat(data_json.get("from_datetime"))
+    to_datetime = datetime.fromisoformat(data_json.get("to_datetime"))
 
     client = AuthenticatedClient(base_url=API_BASE_URL, verify_ssl=False, token=token.original_token)
 

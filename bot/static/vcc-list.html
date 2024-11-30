@@ -33,7 +33,7 @@
     // Обработка отправки формы поиска
     const c = async function(){
         try {
-            const response = await fetch('/api/vcc/list/', {
+            const response = await fetch('/api/vcc/meetings/', {
                 method: 'POST',
                 headers: {
                         'accept': 'application/json',
@@ -41,8 +41,9 @@
                         'init-data': window.Telegram.WebApp.initData
                     },
                 body: JSON.stringify({
-                    date_from: '2024-01-01',
-                    date_to: '2024-12-31',
+                    from_datetime: '2024-01-01',
+                    to_datetime: '2024-12-31',
+                    priority: 1,
                 }),
             });
 
