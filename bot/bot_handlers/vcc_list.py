@@ -52,8 +52,12 @@ async def show_meetings(callback: CallbackQuery):
 
     msg = present_vcc_msg(page, total, meeting, meeting_more.to_dict())
     markup = present_vcc_buttons(key, token, page, total, meeting, meeting_more.to_dict())
+    await callback.answer()
 
-    await callback.message.edit_text(msg, reply_markup=markup, parse_mode="HTML")
+    try:
+        await callback.message.edit_text(msg, reply_markup=markup, parse_mode="HTML")
+    except Exception as e:
+        pass  # No modify content
 
 
 def register_vcc_list_handlers(dp: Dispatcher):

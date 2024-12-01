@@ -44,7 +44,7 @@ class MeetingsClient:
     ) -> tuple[MeetingList, Optional[MeetingShortExtended | MeetingFull]]:
         meetings_resp = await self.__get_meetings(token, params)
         if not meetings_resp or meetings_resp.status_code != 200:
-            raise HTTPException(500, f"Internal Server Error: GET meetings")
+            raise HTTPException(500, f"GET meetings: {meetings_resp.status_code if meetings_resp else 'No response'}")
 
         if not meetings_resp.parsed.data:
             return meetings_resp.parsed, None

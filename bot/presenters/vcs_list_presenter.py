@@ -4,6 +4,8 @@ from client.models import MeetingBare
 from presenters.date import present_date, format_duration
 from services.auth import TokenData
 
+step1, step2 = 5, 10
+
 
 def present_vcc_msg(
         page: int,
@@ -72,12 +74,14 @@ def present_vcc_buttons(
     elif "permalink" in meeting_more:
         buttons_row_1.append(InlineKeyboardButton(text="Ссылка", url=meeting_more.get("permalink")))
 
-    buttons_row_2 = []
-    if page > 1:
-        buttons_row_2.append(InlineKeyboardButton(text="⬅️", callback_data=f"show_meet:{page - 1}:{key}"))
-
-    if page < total:
-        buttons_row_2.append(InlineKeyboardButton(text="➡️", callback_data=f"show_meet:{page + 1}:{key}"))
+    buttons_row_2 = [
+        InlineKeyboardButton(text=f"-{step2}", callback_data=f"show_meet:{max(page - step2, 1)}:{key}"),
+        InlineKeyboardButton(text=f"-{step1}", callback_data=f"show_meet:{max(page - step1, 1)}:{key}"),
+        InlineKeyboardButton(text="◀", callback_data=f"show_meet:{max(page - 1, 1)}:{key}"),
+        InlineKeyboardButton(text="▶", callback_data=f"show_meet:{min(page + 1, total)}:{key}"),
+        InlineKeyboardButton(text=f"+{step1}", callback_data=f"show_meet:{min(page + step1, total)}:{key}"),
+        InlineKeyboardButton(text=f"+{step2}", callback_data=f"show_meet:{min(page + step2, total)}:{key}"),
+    ]
 
     return InlineKeyboardMarkup(inline_keyboard=[
         buttons_row_1,

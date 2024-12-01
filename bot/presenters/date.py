@@ -28,13 +28,13 @@ def format_duration(duration: timedelta | int) -> str:
     seconds = duration.seconds % 60
     result = []
     if days > 0:
-        result.append(f"{days} д{'ень' if days == 1 else 'ней'}")
+        result.append(f"{days} {plural(days, ('день', 'дня', 'дней'))}")
     if hours > 0:
-        result.append(f"{hours} ч{'ас' if hours == 1 else 'аса'}")
+        result.append(f"{hours} {plural(hours, ('час', 'часа', 'часов'))}")
     if minutes > 0:
-        result.append(f"{minutes} минут")
+        result.append(f"{minutes} {plural(hours, ('минута', 'минуты', 'минут'))}")
     if seconds > 0:
-        result.append(f"{seconds} секунд")
+        result.append(f"{seconds} {plural(hours, ('секундв', 'секунды', 'секунд'))}")
     return ' '.join(result) if result else ""
 
 

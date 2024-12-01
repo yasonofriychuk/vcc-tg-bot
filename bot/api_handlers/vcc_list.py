@@ -39,6 +39,7 @@ async def vcc_list(
         params.from_datetime = today - timedelta(days=7)
     if not params.to_datetime:
         params.to_datetime = today
+    params.user_id = token.user.id
 
     try:
         meets, meet = await meet_client.get_meeting_by_filter(token, params)
