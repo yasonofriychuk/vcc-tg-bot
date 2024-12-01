@@ -20,7 +20,7 @@ months = {
 
 def format_duration(duration: timedelta | int) -> str:
     if isinstance(duration, int):
-        duration = timedelta(seconds=duration)
+        duration = timedelta(minutes=duration)
 
     days = duration.days
     hours = duration.seconds // 3600
